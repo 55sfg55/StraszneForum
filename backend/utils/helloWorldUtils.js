@@ -1,31 +1,57 @@
-export const responseDef = {
-    success: false,
-    message: "Failed to generate response/ response not specified.",
-    data: null
-}
+export class helloWorldResponse {
+    constructor() {
+        this.responseDef = {
+            success: false,
+            message: "Failed to generate response/ response not specified.",
+            data: null
+        };
+    }
 
-export function responseJSON(arg_success = null, arg_message = null, arg_data = null) {
-    if (arg_success) {
-        responseDef.success = arg_success
+    setSuccess(success) {
+        this.responseDef.success = success;
     }
-    if (arg_data) {
-        responseDef.data = arg_data
-    }
-    if (arg_message) {
-        responseDef.message = arg_message
-    }
-    return responseDef
-}
 
-export function responseJSONObject(arg) {
-    if (arg.success) {
-        responseDef.success = arg_success
+    setMessage(message) {
+        this.responseDef.message = message;
     }
-    if (arg.data) {
-        responseDef.data = arg_data
+
+    setData(data) {
+        this.responseDef.data = data;
     }
-    if (arg.message) {
-        responseDef.message = arg_message
+
+    getResponse() {
+        return this.responseDef;
     }
-    return responseDef
+
+    resetResponse() {
+        this.responseDef = {
+            success: false,
+            message: "Failed to generate response/ response not specified.",
+            data: null
+        };
+    }
+
+    responseJSON( success, message, data ) {
+        if (success !== undefined) {
+            this.setSuccess(success);
+        }
+        if (message !== undefined) {
+            this.setMessage(message);
+        }
+        if (data !== undefined) {
+            this.setData(data);
+        }
+    }
+
+    responseJSONobject({ success, message, data } = {}) {
+        if (success !== undefined) {
+            this.setSuccess(success);
+        }
+        if (message !== undefined) {
+            this.setMessage(message);
+        }
+        if (data !== undefined) {
+            this.setData(data);
+        }
+    }
 }
