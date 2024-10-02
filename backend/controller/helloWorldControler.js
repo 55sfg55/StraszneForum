@@ -99,6 +99,8 @@ export function getEntryById(req, res) {
 
 export function login(req, res) {
     tempResponse = new utils.helloWorldResponse()
+    tempResponse.setMessage("Failed to check password.")
+
     tempResponse.setData( { isPasswordCorrect: database.checkPassword(Number(req.params.id), String(req.params.password)) } )
     // to implement:  Verify that the data has been successfully retrieved from the database.
     if ( tempResponse.responseDef.data.isPasswordCorrect ) {
