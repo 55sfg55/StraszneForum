@@ -1,0 +1,49 @@
+/* client/src/App.css */
+
+html, body {
+  height: 100%; /* Ensure the body takes the full height */
+  margin: 0; /* Remove default margin */
+}
+
+body {
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  background-color: #f0f0f0; /* Optional background color */
+}
+
+.container {
+  text-align: center;
+}
+
+.squares-containerboard {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+  max-height: 80vh; /* Limit height to 80% of the viewport height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  width: 80vw; /* Set width for the container */
+  border: 1px solid #ccc; /* Optional border */
+  background-color: #fff; /* Optional background color */
+  border-radius: 8px; /* Rounded corners */
+}
+
+
+.squareboard:first-child {
+  border-top: 0px;
+}
+
+
+
+.squareboard {
+  background-color: #fff; /* White background for squares */
+  /*border: 2px solid black; /* Optional border color */
+  border-top: 2px dashed black; 
+  width: 80vw; /* Set fixed width */
+  height: 150px; /* Set fixed height */
+  display: flex;
+  flex-direction: column; /* Stack text vertically inside square */
+  justify-content: center; /* Center text vertically */
+  align-items: center; /* Center text horizontally */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow */
+}
