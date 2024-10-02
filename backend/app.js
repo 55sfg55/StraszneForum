@@ -1,11 +1,12 @@
-const express = require('express');
-const cors = require('cors')
+import express from 'express';
+import cors from 'cors';
 
 const app = express();
 const port = 3000;
 
-const bodyParser = require('body-parser');
-const helloWorldRouter = require('./routers/HelloWorld-router');
+
+import bodyParser from 'body-parser';
+import helloWorldRouter from './routers/HelloWorld-router.js'
 
 app.use(bodyParser.json());
 

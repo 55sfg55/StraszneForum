@@ -1,5 +1,5 @@
-const database = require('../databases/helloWorldDatabase')
-const utils = require('../utils/helloWorldUtils')
+import * as database from '../databases/helloWorldDatabase.js'
+import * as utils from '../utils/helloWorldUtils.js'
 
 const isNumeric = (str) => !isNaN(Number(str)) && /^\d+$/.test(str);
 const separateEntries = (str) => {
