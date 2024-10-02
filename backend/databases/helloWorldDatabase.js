@@ -7,7 +7,7 @@ let users = [
     {
         id: 1,
         username: "admin2",
-        password: "1234",
+        password: "abcd",
 }]
 let entries = [
     {
@@ -33,7 +33,7 @@ let entries = [
     
 ]
 
-function allUsersAllEntries() {
+export function allUsersAllEntries() {
     return users.map(user => {
         // Filter entries for the current user
         const userEntries = entries.filter(entry => entry.userId === user.id);
@@ -47,30 +47,34 @@ function allUsersAllEntries() {
 }
 //console.log(allUsersAllEntries()) //test
 
-function userUsernameToId(argUsername) {
+export function userUsernameToId(argUsername) {
     const temp = users.find(user => user.username === argUsername);
     temp.password = "Access denied."
     return temp.id;
 }
 //console.log(userID("admin")) //test
 
-function userIdToData(argId) {
+export function userIdToData(argId) {
     const temp = users.find(user => user.id === argId);
     temp.password = "Access denied."
     return temp;
 }
 //console.log(userIdToData(0)) //test
 
-function userAllEntries(argId) {
+export function userAllEntries(argId) {
     const temp = entries.filter( entry => entry.userId === argId );
     return temp;
 }
 //console.log(userAllEntries(0)) //test
 
-function entryById(argId) {
+export function entryById(argId) {
     const temp = entries.filter( entry => entry.id === argId );
     return temp;
 }
 //console.log( entry(0) ) //test
 
-module.exports = {users, entries, allUsersAllEntries, userUsernameToId, userIdToData, userAllEntries, entryById}
+export function checkPassword(argId, argPassword) {
+    const temp = users.find(user => user.id === argId && user.password === argPassword);
+    console.log(temp)
+    return false
+}

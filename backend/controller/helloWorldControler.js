@@ -19,16 +19,28 @@ const separateEntries = (str) => {
     };
 };
 
-function getAll(req, res) {
+export function getAll(req, res) {
     tempResponse = new utils.helloWorldResponse()
-    tempResponse.responseJSON(true, "Successfully got all entries.", database.users)
+    tempResponse.setMessage( "Failed to get all entries." )
+
+    tempResponse.setData( database.users )
+    // to implement:  Verify that the data has been successfully retrieved from the database.
+    tempResponse.setAll(true, "Successfully got all entries.")
     
     res.json( tempResponse.responseDef )
 }
-function getAllUsersAllEntries(req, res) {
-    res.json( utils.responseJSON(true, "Succefully got all entries from all users, organised by users.", database.allUsersAllEntries()) )
+
+export function getAllUsersAllEntries(req, res) {
+    tempResponse = new utils.helloWorldResponse()
+    tempResponse.setMessage( "Failed to get all entries from all users, organised by users." )
+
+    tempResponse.setData( database.allUsersAllEntries() )
+    // to implement:  Verify that the data has been successfully retrieved from the database.
+    utils.setAll(true, "Succefully got all entries from all users, organised by users.")
+    res.json( tempResponse.responseDef )
 }
-function getUser(req, res) {
+
+export function getUser(req, res) {
     //get user at /helloWorld/user/ +
     // id or username => data of the user
     // allEntries + id or username => all entries of this user
@@ -52,31 +64,49 @@ function getUser(req, res) {
     if ( !temp.prefix ) {
         tempResponse.setData( database.userIdToData( userID ) )
         // to implement:  Verify that the data has been successfully retrieved from the database.
-        tempResponse.setSuccess( true )
-        tempResponse.setMessage("Successfully got user data of user by ID.")
+        tempResponse.setAll( true, "Successfully got user data of user by ID." )
     }
     else {
         tempResponse.setData( database.userAllEntries( userID ) )
         // to implement:  Verify that the data has been successfully retrieved from the database.
-        tempResponse.setSuccess( true )
-        tempResponse.setMessage("Successfully got all entries of user by ID.")
+        tempResponse.setAll( true, "Successfully got all entries of user by ID." )
     }
 
     res.json( tempResponse )
 }
-function getUserById(req, res) {
+
+export function getUserById(req, res) {
     tempResponse = new utils.helloWorldResponse()
+    tempResponse.setMessage( "Failed to get user data by ID." )
+
     tempResponse.setData( database.userIdToData( Number(req.params.id) ) )
+    // to implement:  Verify that the data has been successfully retrieved from the database.
     tempResponse.setAll(true, "Successfully got user data by ID.")
 
     res.json( tempResponse.responseDef )
 }
-function getEntryById(req, res) {
+
+export function getEntryById(req, res) {
     tempResponse = new utils.helloWorldResponse()
+    tempResponse.setMessage( "Failed to get entry by ID." )
+
     tempResponse.setData( database.entryById(Number(req.params.id)) )
-    tempResponse.setAll(true, "Successfully entry by ID.")
+    // to implement:  Verify that the data has been successfully retrieved from the database.
+    tempResponse.setAll(true, "Successfully got entry by ID.")
 
     res.json( tempResponse.responseDef )
 }
 
-module.exports = { getAll, getAllUsersAllEntries, getUser, getUserById, getEntryById }
+export function login(req, res) {
+    tempResponse = new utils.helloWorldResponse()
+    tempResponse.setData( { isPasswordCorrect: database.checkPassword(Number(req.params.id), String(req.params.password)) } )
+    // to implement:  Verify that the data has been successfully retrieved from the database.
+    if ( tempResponse.responseDef.data.isPasswordCorrect ) {
+        tempResponse.setAll(true, "Password is correct.")
+    }    
+    else {
+        // For now, in order to avoid confusion, success is set to false, regardless use the data field to verify password, as success field should only tell if the request was successfull.
+        tempResponse.setAll(false, "Password is incorrect. Successfully processed request.")
+    }
+    res.json( tempResponse.responseDef ) 
+}
