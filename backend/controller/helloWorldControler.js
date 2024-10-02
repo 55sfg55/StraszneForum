@@ -33,6 +33,8 @@ function getUser(req, res) {
     // id or username => data of the user
     // allEntries + id or username => all entries of this user
 
+
+    // to differentiate between /helloWorld/user/allEntries:id (request for user's entries) and /helloWorld/user/:id (request for userdata) //Inefficient, but for now it just works,
     const temp = separateEntries(req.params.id)
 
     tempResponse = new utils.helloWorldResponse()
@@ -42,38 +44,24 @@ function getUser(req, res) {
 
     if (isNumeric(temp.theRest)) {
         userID = Number(temp.theRest)
-        if ( !temp.prefix ) {
-            tempResponse.setData( database.userIdToData( userID ) )
-            // to implement:  Verify that the data has been successfully retrieved from the database.
-            tempResponse.setSuccess( true )
-            tempResponse.setMessage("Successfully got userdata of user by ID.")
-        }
-        else {
-            tempResponse.setData( database.userAllEntries( userID ) )
-            // to implement:  Verify that the data has been successfully retrieved from the database.
-            tempResponse.setSuccess( true )
-            tempResponse.setMessage("Successfully got all entries of user by ID.")
-        }
     }
     else {
         username = String(temp.theRest)
-        if ( !temp.prefix ) {
-            tempResponse.setData( database.userUsernameToId( username ) )
-            // to implement:  Verify that the data has been successfully retrieved from the database.
-            tempResponse.setSuccess( true )
-            tempResponse.setMessage(  "Successfully got userdata of user by username." )
-        }
-        else {
-            database.userUsernameToId( username )
-            userdata = database.userUsernameToId( username )
-            userID = userdata.id
-
-            tempResponse.setData( database.userAllEntries( userID ) )
-            // to implement:  Verify that the data has been successfully retrieved from the database.
-            tempResponse.setSuccess( true )
-            tempResponse.setMessage(  "Successfully got all entries of user by username, after converting it to id." )
-        }
+        userID = database.userUsernameToId( username )
     }
+    if ( !temp.prefix ) {
+        tempResponse.setData( database.userIdToData( userID ) )
+        // to implement:  Verify that the data has been successfully retrieved from the database.
+        tempResponse.setSuccess( true )
+        tempResponse.setMessage("Successfully got user data of user by ID.")
+    }
+    else {
+        tempResponse.setData( database.userAllEntries( userID ) )
+        // to implement:  Verify that the data has been successfully retrieved from the database.
+        tempResponse.setSuccess( true )
+        tempResponse.setMessage("Successfully got all entries of user by ID.")
+    }
+
     res.json( tempResponse )
 }
 function getUserById(req, res) {

@@ -50,7 +50,7 @@ function allUsersAllEntries() {
 function userUsernameToId(argUsername) {
     const temp = users.find(user => user.username === argUsername);
     temp.password = "Access denied."
-    return temp;
+    return temp.id;
 }
 //console.log(userID("admin")) //test
 
