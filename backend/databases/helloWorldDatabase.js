@@ -49,14 +49,14 @@ function allUsersAllEntries() {
 
 function userUsernameToId(argUsername) {
     const temp = users.find(user => user.username === argUsername);
-    temp.password = "Not for pies the password"
+    temp.password = "Access denied."
     return temp;
 }
 //console.log(userID("admin")) //test
 
 function userIdToData(argId) {
     const temp = users.find(user => user.id === argId);
-    temp.password = "Not for pies the password"
+    temp.password = "Access denied."
     return temp;
 }
 //console.log(userIdToData(0)) //test
