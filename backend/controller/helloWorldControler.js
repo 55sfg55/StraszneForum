@@ -105,7 +105,7 @@ export function login(req, res) {
     tempResponse.setData( { isPasswordCorrect: database.checkPassword(Number(req.body.id), String(req.body.password)) } )
     // to implement:  Verify that the data has been successfully retrieved from the database.
     if ( tempResponse.responseDef.data.isPasswordCorrect ) {
-        tempResponse.setAll(true, "Password is correct.")
+        tempResponse.setAll(true, "Password is correct.  Successfully processed request.")
     }    
     else {
         // For now, in order to avoid confusion, success is set to false, regardless use the data field to verify password, as success field should only tell if the request was successfull.
