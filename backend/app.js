@@ -18,6 +18,7 @@ app.use(cors());
 
 
 
+
 app.get('/', (req, res) => {
     console.log("asd")
     res.json({})

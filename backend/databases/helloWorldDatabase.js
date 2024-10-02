@@ -1,4 +1,4 @@
-let users = [
+export let users = [
     {
         id: 0,
         username: "admin",
@@ -9,7 +9,7 @@ let users = [
         username: "admin2",
         password: "abcd",
 }]
-let entries = [
+export let entries = [
     {
         id: 0,
         userId: 0,
@@ -36,7 +36,7 @@ let entries = [
 export function allUsersAllEntries() {
     return users.map(user => {
         // Filter entries for the current user
-        const userEntries = entries.filter(entry => entry.userId === user.id);
+        const userEntries = entries.filter(entry => entry.userId === user.id).map(entry => JSON.parse(JSON.stringify(entry)));
 
         return {
             id: user.id,
@@ -48,33 +48,43 @@ export function allUsersAllEntries() {
 //console.log(allUsersAllEntries()) //test
 
 export function userUsernameToId(argUsername) {
-    const temp = users.find(user => user.username === argUsername);
-    temp.password = "Access denied."
+    let temp;
+    temp = users.find(user => user.username === argUsername)
+    temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
+    if (temp) {
+        temp.password = "Access denied."
+    }
     return temp.id;
 }
 //console.log(userID("admin")) //test
 
 export function userIdToData(argId) {
-    const temp = users.find(user => user.id === argId);
-    temp.password = "Access denied."
+    let temp;
+    temp = users.find(user => user.id === argId)
+    temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
+    if(temp && temp.password) {
+        temp.password = "Access denied."
+    }
     return temp;
 }
 //console.log(userIdToData(0)) //test
 
 export function userAllEntries(argId) {
-    const temp = entries.filter( entry => entry.userId === argId );
+    const temp = entries.filter( entry => entry.userId === argId ).map(entry => JSON.parse(JSON.stringify(entry)));
     return temp;
 }
 //console.log(userAllEntries(0)) //test
 
 export function entryById(argId) {
-    const temp = entries.filter( entry => entry.id === argId );
+    const temp = entries.filter( entry => entry.id === argId ).map(entry => JSON.parse(JSON.stringify(entry)));;
     return temp;
 }
 //console.log( entry(0) ) //test
 
+// add token and session handler
 export function checkPassword(argId, argPassword) {
-    const temp = users.find(user => user.id === argId && user.password === argPassword);
-    console.log(temp)
-    return false
+    let temp;
+    temp = users.find(user => user.id === argId && user.password === argPassword)
+    temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
+    return !(temp === undefined)
 }

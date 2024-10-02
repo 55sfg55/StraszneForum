@@ -7,9 +7,10 @@ import * as databaseController from '../controller/helloWorldControler.js'
 // Sample route: Get all users
 router.get('/', databaseController.getAll);
 router.get('/allUsersAllEntries', databaseController.getAllUsersAllEntries)
+router.get('/user/login/', databaseController.login)
 router.get('/user/:id', databaseController.getUser);
 router.get('/entry/:id', databaseController.getEntryById);
-router.get('/user/login', databaseController.login)
+
 
 // Sample route: Create a new user
 router.post('/', (req, res) => {

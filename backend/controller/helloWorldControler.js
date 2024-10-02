@@ -20,7 +20,7 @@ const separateEntries = (str) => {
 };
 
 export function getAll(req, res) {
-    tempResponse = new utils.helloWorldResponse()
+    const tempResponse = new utils.helloWorldResponse()
     tempResponse.setMessage( "Failed to get all entries." )
 
     tempResponse.setData( database.users )
@@ -31,7 +31,7 @@ export function getAll(req, res) {
 }
 
 export function getAllUsersAllEntries(req, res) {
-    tempResponse = new utils.helloWorldResponse()
+    const tempResponse = new utils.helloWorldResponse()
     tempResponse.setMessage( "Failed to get all entries from all users, organised by users." )
 
     tempResponse.setData( database.allUsersAllEntries() )
@@ -49,11 +49,12 @@ export function getUser(req, res) {
     // to differentiate between /helloWorld/user/allEntries:id (request for user's entries) and /helloWorld/user/:id (request for userdata) //Inefficient, but for now it just works,
     const temp = separateEntries(req.params.id)
 
-    tempResponse = new utils.helloWorldResponse()
+    const tempResponse = new utils.helloWorldResponse()
     tempResponse.setMessage( "Failed to get userdata." )
 
     // to do: !(is numeric) => username to id, if prefix (allEntries) => id -> all entries} else => id -> userdata
-
+    let userID;
+    let username;
     if (isNumeric(temp.theRest)) {
         userID = Number(temp.theRest)
     }
@@ -76,7 +77,7 @@ export function getUser(req, res) {
 }
 
 export function getUserById(req, res) {
-    tempResponse = new utils.helloWorldResponse()
+    const tempResponse = new utils.helloWorldResponse()
     tempResponse.setMessage( "Failed to get user data by ID." )
 
     tempResponse.setData( database.userIdToData( Number(req.params.id) ) )
@@ -87,7 +88,7 @@ export function getUserById(req, res) {
 }
 
 export function getEntryById(req, res) {
-    tempResponse = new utils.helloWorldResponse()
+    const tempResponse = new utils.helloWorldResponse()
     tempResponse.setMessage( "Failed to get entry by ID." )
 
     tempResponse.setData( database.entryById(Number(req.params.id)) )
@@ -98,10 +99,10 @@ export function getEntryById(req, res) {
 }
 
 export function login(req, res) {
-    tempResponse = new utils.helloWorldResponse()
+    const tempResponse = new utils.helloWorldResponse()
     tempResponse.setMessage("Failed to check password.")
 
-    tempResponse.setData( { isPasswordCorrect: database.checkPassword(Number(req.params.id), String(req.params.password)) } )
+    tempResponse.setData( { isPasswordCorrect: database.checkPassword(Number(req.body.id), String(req.body.password)) } )
     // to implement:  Verify that the data has been successfully retrieved from the database.
     if ( tempResponse.responseDef.data.isPasswordCorrect ) {
         tempResponse.setAll(true, "Password is correct.")
