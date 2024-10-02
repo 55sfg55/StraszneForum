@@ -65,10 +65,18 @@ function getUser(req, res) {
     res.json( tempResponse )
 }
 function getUserById(req, res) {
-    res.json( utils.responseJSON(true, "Successfully got user data by ID.", database.userIdToData( Number(req.params.id) )) )
+    tempResponse = new utils.helloWorldResponse()
+    tempResponse.setData( database.userIdToData( Number(req.params.id) ) )
+    tempResponse.setAll(true, "Successfully got user data by ID.")
+
+    res.json( tempResponse.responseDef )
 }
 function getEntryById(req, res) {
-    res.json( utils.responseJSON(true, "Successfully entry by ID.", database.entryById(Number(req.params.id))) )
+    tempResponse = new utils.helloWorldResponse()
+    tempResponse.setData( database.entryById(Number(req.params.id)) )
+    tempResponse.setAll(true, "Successfully entry by ID.")
+
+    res.json( tempResponse.responseDef )
 }
 
 module.exports = { getAll, getAllUsersAllEntries, getUser, getUserById, getEntryById }

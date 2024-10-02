@@ -31,7 +31,7 @@ export class helloWorldResponse {
         };
     }
 
-    responseJSON( success, message, data ) {
+    setAll( success, message, data ) {
         if (success !== undefined) {
             this.setSuccess(success);
         }
@@ -43,7 +43,7 @@ export class helloWorldResponse {
         }
     }
 
-    responseJSONobject({ success, message, data } = {}) {
+    setObject({ success, message, data } = {}) {
         if (success !== undefined) {
             this.setSuccess(success);
         }
