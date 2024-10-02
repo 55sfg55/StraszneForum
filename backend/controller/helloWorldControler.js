@@ -33,39 +33,18 @@ function getUser(req, res) {
     const temp = separateEntries(req.params.id)
     if ( !temp.prefix ) {
         if (isNumeric(temp.rest)) {
-            res.json( utils.responseJSON(true, "Successfully got all entries.", database.users)
-                {
-                success: true,
-                message: "Successfully got userdata of user by ID.",
-                data: database.userIdToData( Number(temp.rest) )
-            })
+            res.json( utils.responseJSON(true, "Successfully got userdata of user by ID.", database.userIdToData( Number(temp.rest) )) )
         }
         else{
-            res.json( utils.responseJSON(true, "Successfully got all entries.", database.users)
-                {
-                success: true,
-                message: "Successfully got userdata of user by username.",
-                data: database.userUsernameToId( String(temp.rest) )
-            })
-        }
+            res.json( utils.responseJSON(true, "Successfully got userdata of user by username.", database.userUsernameToId( String(temp.rest))) )        }
     }
     else {
         if (isNumeric(temp.rest)) {
-            res.json( utils.responseJSON(true, "Successfully got all entries.", database.users)
-                {
-                success: true,
-                message: "Successfully got userdata of user by ID.",
-                data: database.userAllEntries( Number(temp.rest) )
-            })
+            res.json( utils.responseJSON(true, "Successfully got userdata of user by ID.", database.userAllEntries( Number(temp.rest) )))
         }
         else{
             const tempId = database.userUsernameToId(String(temp.rest)).id // get id of user from userdata
-            res.json( utils.responseJSON(true, "Successfully got all entries.", database.users)
-            {
-                success: true,
-                message: "Successfully got userdata of user by ID, after converting username to ID.",
-                data: database.userAllEntries( Number(tempId) )
-            })
+            res.json( utils.responseJSON(true, "Successfully got userdata of user by ID, after converting username to ID.", database.userAllEntries( Number(tempId) )) )
         }
     }
 }
