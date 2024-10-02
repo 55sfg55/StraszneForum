@@ -45,7 +45,6 @@ export function allUsersAllEntries() {
         };
     });
 }
-//console.log(allUsersAllEntries()) //test
 
 export function userUsernameToId(argUsername) {
     let temp;
@@ -56,7 +55,6 @@ export function userUsernameToId(argUsername) {
     }
     return temp.id;
 }
-//console.log(userID("admin")) //test
 
 export function userIdToData(argId) {
     let temp;
@@ -67,19 +65,16 @@ export function userIdToData(argId) {
     }
     return temp;
 }
-//console.log(userIdToData(0)) //test
 
 export function userAllEntries(argId) {
     const temp = entries.filter( entry => entry.userId === argId ).map(entry => JSON.parse(JSON.stringify(entry)));
     return temp;
 }
-//console.log(userAllEntries(0)) //test
 
 export function entryById(argId) {
     const temp = entries.filter( entry => entry.id === argId ).map(entry => JSON.parse(JSON.stringify(entry)));;
     return temp;
 }
-//console.log( entry(0) ) //test
 
 // add token and session handler
 export function checkPassword(argId, argPassword) {
