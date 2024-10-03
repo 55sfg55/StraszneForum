@@ -111,18 +111,18 @@ export function login(req, res) {
             // For now, in order to avoid confusion, success is set to false, regardless use the data field to verify password, as success field should only tell if the request was successfull.
             tempResponse.setAll(false, "Password is incorrect. Successfully processed request.")
         }
+        res.json( tempResponse.responseDef )
     }
     else {
         loginByUsername(req, res)
-    }
-    res.json( tempResponse.responseDef ) 
+    } 
 }
 
 export function loginByUsername(req, res) {
     const tempResponse = new utils.helloWorldResponse()
     tempResponse.setMessage("Failed to check password.")
 
-    tempResponse.setData( { isPasswordCorrect: database.checkPasswordByUsername(String(req.body.username), String(req.body.password)) } )
+    tempResponse.setData( database.loginByUsername(String(req.body.username), String(req.body.password)) )
     // to implement:  Verify that the data has been successfully retrieved from the database.
     if ( tempResponse.responseDef.data.isPasswordCorrect ) {
         tempResponse.setAll(true, "Password is correct.  Successfully processed request.")

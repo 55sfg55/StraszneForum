@@ -32,9 +32,39 @@ export let entries = [
     },
     
 ]
+
+function generateRandomKey(username) {
+    // Simple hash function to convert the username to a numeric value
+    function hashString(str) {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash = (hash << 5) - hash + str.charCodeAt(i);
+            hash |= 0; // Convert to 32bit integer
+        }
+        return Math.abs(hash);
+    }
+
+    // Get a hash value from the username
+    const hashValue = hashString(username);
+
+    // Get the current timestamp
+    const timestamp = Date.now();
+
+    // Generate a random string based on the hash value and timestamp
+    const randomChars = (hashValue + timestamp)
+        .toString(36) // Convert to base-36 to get a mix of alphanumeric characters
+        .substring(0, 24); // Get the first 24 characters for the random string
+
+    // Create the final random key
+    const randomKey = `${randomChars}-${timestamp}`;
+
+    return randomKey;
+}
+
+
 let sessions = [
 ]
-const sessionTime = 1000 * 60 * 1 
+const sessionTime = 1000 * 60 * 1 // secound * sec in a minute * minutes
 
 function addSession(argID, argToken) {
     sessions.push( {
@@ -61,8 +91,11 @@ function checkSessionByToken(argToken) {
         return false
     }
 }
+function stopSessionByUserID( argID ) {
+    sessions = sessions.filter(session => session.id !== argID)
+}
 function clearSessions() {
-    sessions = sessions.filter(session => session.exp < Date.now())
+    sessions = sessions.filter(session => session.exp > Date.now())
 }
 
 export function allUsersAllEntries() {
@@ -136,4 +169,26 @@ export function register( argUsername, argPassword ) {
         return true
     }
     return false
+}
+export function loginByUsername(argUsername, argPassword) {
+    clearSessions()
+    console.log(sessions)
+    let temp;
+    temp = users.find(user => user.username === argUsername && user.password === argPassword)
+    temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
+    if ( !(temp === undefined) ) {
+        stopSessionByUserID( temp.id )
+        const token = generateRandomKey(argUsername)
+        addSession(temp.id, token)
+        return {
+            isPasswordCorrect: true,
+            token: token
+        }
+    }
+    else {
+        return {
+            isPasswordCorrect: false,
+            token: ""
+        }
+    }
 }
