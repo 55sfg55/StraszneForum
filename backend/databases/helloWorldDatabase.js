@@ -171,8 +171,6 @@ export function register( argUsername, argPassword ) {
     return false
 }
 export function loginByUsername(argUsername, argPassword) {
-    clearSessions()
-    console.log(sessions)
     let temp;
     temp = users.find(user => user.username === argUsername && user.password === argPassword)
     temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
