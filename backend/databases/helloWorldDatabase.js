@@ -32,6 +32,38 @@ export let entries = [
     },
     
 ]
+let sessions = [
+]
+const sessionTime = 1000 * 60 * 1 
+
+function addSession(argID, argToken) {
+    sessions.push( {
+        id: argID,
+        token: argToken,
+        exp: Date.now() + sessionTime
+    } )
+}
+function checkSessionByID(argID) {
+    const querry = sessions.find( session => session.id === argID )
+    if ( querry === undefined ) {
+        return true
+    }
+    else {
+        return false
+    }
+}
+function checkSessionByToken(argToken) {
+    const querry = sessions.find( session => session.token === argToken )
+    if ( querry === undefined ) {
+        return true
+    }
+    else {
+        return false
+    }
+}
+function clearSessions() {
+    sessions = sessions.filter(session => session.exp < Date.now())
+}
 
 export function allUsersAllEntries() {
     return users.map(user => {
