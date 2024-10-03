@@ -83,3 +83,9 @@ export function checkPassword(argId, argPassword) {
     temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
     return !(temp === undefined)
 }
+export function checkPasswordByUsername(argUsername, argPassword) {
+    let temp;
+    temp = users.find(user => user.username === argUsername && user.password === argPassword)
+    temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
+    return !(temp === undefined)
+}

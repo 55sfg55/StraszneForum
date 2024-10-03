@@ -60,7 +60,7 @@ export function getUser(req, res) {
     }
     else {
         username = String(temp.theRest)
-        userID = database.userUsernameToId( username )
+        userID = database.userUsernameToId( username ) // unnecessary database connection?
     }
     if ( !temp.prefix ) {
         tempResponse.setData( database.userIdToData( userID ) )
@@ -101,8 +101,28 @@ export function getEntryById(req, res) {
 export function login(req, res) {
     const tempResponse = new utils.helloWorldResponse()
     tempResponse.setMessage("Failed to check password.")
+    if (req.body.id) {
+        tempResponse.setData( { isPasswordCorrect: database.checkPassword(Number(req.body.id), String(req.body.password)) } )
+        // to implement:  Verify that the data has been successfully retrieved from the database.
+        if ( tempResponse.responseDef.data.isPasswordCorrect ) {
+            tempResponse.setAll(true, "Password is correct.  Successfully processed request.")
+        }    
+        else {
+            // For now, in order to avoid confusion, success is set to false, regardless use the data field to verify password, as success field should only tell if the request was successfull.
+            tempResponse.setAll(false, "Password is incorrect. Successfully processed request.")
+        }
+    }
+    else {
+        loginByUsername(req, res)
+    }
+    res.json( tempResponse.responseDef ) 
+}
 
-    tempResponse.setData( { isPasswordCorrect: database.checkPassword(Number(req.body.id), String(req.body.password)) } )
+export function loginByUsername(req, res) {
+    const tempResponse = new utils.helloWorldResponse()
+    tempResponse.setMessage("Failed to check password.")
+
+    tempResponse.setData( { isPasswordCorrect: database.checkPasswordByUsername(String(req.body.username), String(req.body.password)) } )
     // to implement:  Verify that the data has been successfully retrieved from the database.
     if ( tempResponse.responseDef.data.isPasswordCorrect ) {
         tempResponse.setAll(true, "Password is correct.  Successfully processed request.")
@@ -112,4 +132,12 @@ export function login(req, res) {
         tempResponse.setAll(false, "Password is incorrect. Successfully processed request.")
     }
     res.json( tempResponse.responseDef ) 
+}
+
+export function register(req, res) {
+    const tempResponse = new utils.helloWorldResponse()
+    tempResponse.setMessage( "Failed to register." )
+
+    // push the user into the database
+    tempResponse.setData( database. )
 }
