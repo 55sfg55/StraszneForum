@@ -128,7 +128,6 @@ export function loginByUsername(req, res) {
         tempResponse.setAll(true, "Password is correct.  Successfully processed request.")
     }    
     else {
-        // For now, in order to avoid confusion, success is set to false, regardless use the data field to verify password, as success field should only tell if the request was successfull.
         tempResponse.setAll(false, "Password is incorrect. Successfully processed request.")
     }
     res.json( tempResponse.responseDef ) 
@@ -139,5 +138,15 @@ export function register(req, res) {
     tempResponse.setMessage( "Failed to register." )
 
     // push the user into the database
-    tempResponse.setData( database. )
-}
+    let querry = database.register(req.body.username, req.body.password)
+    if ( querry ) {
+        tempResponse.setData( {
+            isUserAdded: querry
+        } )
+        tempResponse.setAll(true, "User was added.")
+    }
+    else {
+        tempResponse.setAll(false, "User was not added.")
+    }
+    res.json(tempResponse.responseDef)
+}   

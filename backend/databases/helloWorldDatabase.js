@@ -89,3 +89,19 @@ export function checkPasswordByUsername(argUsername, argPassword) {
     temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
     return !(temp === undefined)
 }
+export function register( argUsername, argPassword ) {
+    let temp;
+    temp = users.find(user => user.username === argUsername)
+    if( temp === undefined ) {
+        const newID = users[users.length - 1].id
+        users.push(
+            {
+                id: newID,
+                username: argUsername,
+                password: argPassword
+            }
+        )
+        return true
+    }
+    return false
+}
