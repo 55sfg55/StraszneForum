@@ -190,3 +190,8 @@ export function loginByUsername(argUsername, argPassword) {
         }
     }
 }
+
+// session cleaning, once 10 sec for now.
+setInterval(() => {
+    clearSessions()
+}, 1000 * 10);
