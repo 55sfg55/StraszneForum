@@ -84,7 +84,11 @@ function checkSessionByID(argID) {
 }
 export function checkSessionByToken(argToken) {
     console.log(sessions, argToken)
-    const querry = sessions.find( session => String(session.token)  === String(argToken) )
+    // Put here any validation etc.:
+    argToken = String(argToken)
+
+
+    const querry = sessions.find( session => session.token  === argToken )
     if ( querry === undefined ) {
         return false
     }
