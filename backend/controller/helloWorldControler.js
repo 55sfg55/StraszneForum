@@ -19,16 +19,17 @@ const separateEntries = (str) => {
     };
 };
 
-export function getAll(req, res) {
-    const tempResponse = new utils.helloWorldResponse()
-    tempResponse.setMessage( "Failed to get all entries." )
+// consider and probably delete this:
+// export function getAll(req, res) {
+//     const tempResponse = new utils.helloWorldResponse()
+//     tempResponse.setMessage( "Failed to get all entries." )
 
-    tempResponse.setData( database.users )
-    // to implement:  Verify that the data has been successfully retrieved from the database.
-    tempResponse.setAll(true, "Successfully got all entries.")
+//     tempResponse.setData( database.users )
+//     // to implement:  Verify that the data has been successfully retrieved from the database.
+//     tempResponse.setAll(true, "Successfully got all entries.")
     
-    res.json( tempResponse.responseDef )
-}
+//     res.json( tempResponse.responseDef )
+// }
 
 export function getAllUsersAllEntries(req, res) {
     const tempResponse = new utils.helloWorldResponse()

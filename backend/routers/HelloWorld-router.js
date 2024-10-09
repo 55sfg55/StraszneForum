@@ -4,8 +4,9 @@ const router = express.Router();
 
 import * as databaseController from '../controller/helloWorldControler.js'
 
+import * as utils from '../utils/helloWorldUtils.js'
+
 // Sample route: Get all users
-router.get('/', databaseController.getAll);
 router.get('/allUsersAllEntries', databaseController.getAllUsersAllEntries)
 router.get('/user/login/', databaseController.login)
 router.get('/user/checkSession/', databaseController.checkSession)
@@ -13,11 +14,10 @@ router.get('/user/register/', databaseController.register)
 router.get('/user/:id', databaseController.getUser);
 router.get('/entry/:id', databaseController.getEntryById);
 
-
-// Sample route: Create a new user
-router.post('/', (req, res) => {
-    const newUser = req.body;
-    res.status(201).send(`User created: ${JSON.stringify(newUser)}`);
+router.get('/', (req, res) => {
+    const tempResponse = new utils.helloWorldResponse()
+    tempResponse.setAll(true, "Successfully connected to version 0 of the Hello World message board.")
+    res.json(tempResponse.responseDef)
 });
 
 // Export the router
