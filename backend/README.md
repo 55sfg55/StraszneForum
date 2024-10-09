@@ -103,6 +103,7 @@ output:
 }
 ```
 3. POST /hellowolrd/v0/users/login - self-explanatory. Use body of the request to provide username and password.
+
 body:
 ```json
 {
