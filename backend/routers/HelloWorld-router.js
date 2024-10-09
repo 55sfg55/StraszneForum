@@ -8,6 +8,7 @@ import * as databaseController from '../controller/helloWorldControler.js'
 router.get('/', databaseController.getAll);
 router.get('/allUsersAllEntries', databaseController.getAllUsersAllEntries)
 router.get('/user/login/', databaseController.login)
+router.get('/user/checkSession/', databaseController.checkSession)
 router.get('/user/register/', databaseController.register)
 router.get('/user/:id', databaseController.getUser);
 router.get('/entry/:id', databaseController.getEntryById);

@@ -82,13 +82,14 @@ function checkSessionByID(argID) {
         return false
     }
 }
-function checkSessionByToken(argToken) {
-    const querry = sessions.find( session => session.token === argToken )
+export function checkSessionByToken(argToken) {
+    console.log(sessions, argToken)
+    const querry = sessions.find( session => String(session.token)  === String(argToken) )
     if ( querry === undefined ) {
-        return true
+        return false
     }
     else {
-        return false
+        return true
     }
 }
 function stopSessionByUserID( argID ) {

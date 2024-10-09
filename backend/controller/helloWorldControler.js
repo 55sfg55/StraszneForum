@@ -150,3 +150,22 @@ export function register(req, res) {
     }
     res.json(tempResponse.responseDef)
 }   
+
+// TODO:
+export function checkSession(req, res) {
+    const tempResponse = new utils.helloWorldResponse()
+    tempResponse.setMessage("Failed to check password.")
+
+    tempResponse.setData( {
+        isTokenCorrect: database.checkSessionByToken(String(req.body.token)) 
+    }) 
+    console.log( tempResponse.responseDef.data, req.body.token )
+    // to implement:  Verify that the data has been successfully retrieved from the database.
+    if ( tempResponse.responseDef.data.isTokenCorrect ) {
+        tempResponse.setAll(true, "Token is correct.")
+    }    
+    else {
+        tempResponse.setAll(false, "Invalid token.")
+    }
+    res.json( tempResponse.responseDef ) 
+}
