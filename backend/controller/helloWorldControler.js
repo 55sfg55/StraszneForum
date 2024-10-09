@@ -9,7 +9,7 @@ export function getAllUsersAllEntries(req, res) {
 
     tempResponse.setData( database.allUsersAllEntries() )
     // to implement:  Verify that the data has been successfully retrieved from the database.
-    tempResponse.setAll(true, "Succefully got all entries from all users, organised by users.")
+    tempResponse.setAll(true, "Successfully got all entries from all users, organised by users.")
     res.json( tempResponse.responseDef )
 }
 
