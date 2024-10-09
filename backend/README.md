@@ -1,6 +1,6 @@
 # Forum - Backend API Documentation
 **Important:**
-_This code isn't secure. Do not use this version of code in the actual production app, it is alpha version yet to be finished, even as alpha._
+_This code isn't secure. Do not use this version in a production application; it is an alpha version that is not yet finished._
 
 **Description:**
 _This API is designed to handle forum-related features, including user authentication, message boards, and data management for user entries. It enables developers to integrate login systems and user-based thread interactions into their applications._
