@@ -212,7 +212,7 @@ output:
 {
   "success": true,
   "message": "Successfully got entry by ID.",
-  data: [
+  "data": [
   {
     "id": 0,
     "userId": 0,
