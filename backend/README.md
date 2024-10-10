@@ -135,7 +135,6 @@ output:
   "message":"Password is correct.  Successfully processed request.",
   "data":
   {
-    "isPasswordCorrect":true,
     "token":"m23vnvoi-1728507086803"
   }
 }
