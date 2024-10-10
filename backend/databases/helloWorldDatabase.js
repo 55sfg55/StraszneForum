@@ -64,26 +64,30 @@ function generateRandomKey(username) {
 
 let sessions = [
 ]
-const sessionTime = 1000 * 60 * 1 // secound * sec in a minute * minutes
+const sessionTime = 1000 * 60 * 10 // secound * sec in a minute * minutes
 
 function addSession(argID, argToken) {
     sessions.push( {
-        id: argID,
+        userID: argID,
         token: argToken,
         exp: Date.now() + sessionTime
     } )
 }
-function checkSessionByID(argID) {
+function checkSessionByUserID(argID) {
     const querry = sessions.find( session => session.id === argID )
-    if ( querry === undefined ) {
-        return true
+    if ( querry !== undefined && querry.exp < Date.now()) {
+        if (querry.exp > Date.now()) {
+            return true
+        }
+        stopSessionByUserID( argID )
+        return false
     }
     else {
         return false
     }
 }
 export function checkSessionByToken(argToken) {
-    console.log(sessions, argToken)
+    //console.log(sessions, argToken, Date.now())
     // Put here any validation etc.:
     argToken = String(argToken)
 
@@ -93,11 +97,18 @@ export function checkSessionByToken(argToken) {
         return false
     }
     else {
-        return true
+        if (querry.exp > Date.now()) {
+            return true
+        }
+        stopSessionByUserToken(argToken)
+        return false
     }
 }
 function stopSessionByUserID( argID ) {
     sessions = sessions.filter(session => session.id !== argID)
+}
+function stopSessionByUserToken( argToken ) {
+    sessions = sessions.filter(session => session.token !== argToken)
 }
 function clearSessions() {
     sessions = sessions.filter(session => session.exp > Date.now())
@@ -199,4 +210,4 @@ export function loginByUsername(argUsername, argPassword) {
 // session cleaning, once 10 sec for now.
 setInterval(() => {
     clearSessions()
-}, 1000 * 10);
+}, 1000 * 10 );
