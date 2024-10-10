@@ -196,7 +196,7 @@ output:
 ```
 {
   "success": true,
-  "message": 'Token is correct.',
+  "message": "Token is correct.",
   "data": null
 }
 ```
@@ -211,12 +211,12 @@ output:
 ```json
 {
   "success": true,
-  "message": 'Successfully got entry by ID.',
+  "message": "Successfully got entry by ID.",
   data: [
   {
     "id": 0,
     "userId": 0,
-    "content": 'Wpis testowy - hardcoded'
+    "content": "Wpis testowy - hardcoded"
   }
   ]
 }
@@ -232,18 +232,18 @@ output:
 ```json
 {
   "success": true,
-  "message": 'Successfully got all entries from all users, organised by users.',
+  "message": "Successfully got all entries from all users, organised by users.",
   "data": [
-    { "id": 0, "username": 'admin', allEntries: [Array] },
-    { "id": 1, "username": 'admin2', allEntries: [Array] }
+    { "id": 0, "username": "admin", allEntries: [Array] },
+    { "id": 1, "username": "admin2", allEntries: [Array] }
   ]
 }
 ```
 [Array] example (array of user's entries):
 ```json
 [
-  { "id": 0, "username": 'admin', "allEntries": [ [Object], [Object] ] },
-  { "id": 1, "username": 'admin2', allEntries: [ [Object], [Object] ] }
+  { "id": 0, "username": "admin", "allEntries": [ [Object], [Object] ] },
+  { "id": 1, "username": "admin2", allEntries: [ [Object], [Object] ] }
 ]
 ```
 [Object] example (entry):
@@ -251,7 +251,7 @@ output:
 {
     "id": 2,
     "userId": 0,
-    "content": 'wpis testowy nr. 2 pierwszego admina - hardcoded'
+    "content": "wpis testowy nr. 2 pierwszego admina - hardcoded"
 }
 ```
 
