@@ -77,7 +77,9 @@ function checkSessionByUserID(argID) {
     const querry = sessions.find( session => session.id === argID )
     if ( querry !== undefined && querry.exp < Date.now()) {
         if (querry.exp > Date.now()) {
-            return true
+            return {
+                userID: querry.id,
+            }
         }
         stopSessionByUserID( argID )
         return false
@@ -98,7 +100,9 @@ export function checkSessionByToken(argToken) {
     }
     else {
         if (querry.exp > Date.now()) {
-            return true
+            return {
+                userID: querry.userID,
+            }
         }
         stopSessionByUserToken(argToken)
         return false
@@ -174,7 +178,7 @@ export function register( argUsername, argPassword ) {
     let temp;
     temp = users.find(user => user.username === argUsername)
     if( temp === undefined ) {
-        const newID = users[users.length - 1].id
+        const newID = users[users.length - 1].id + 1
         users.push(
             {
                 id: newID,
@@ -204,6 +208,22 @@ export function loginByUsername(argUsername, argPassword) {
             isPasswordCorrect: false,
             token: ""
         }
+    }
+}
+
+export function postEntry(argToken, argContent) {
+    const querry = checkSessionByToken(argToken)
+    if (querry) {
+        entries.push( {
+            id: entries[entries.length-1].id+1,
+            userId: querry.userID,
+            content: argContent
+        })
+        console.log(entries, querry, users)
+        return true
+    }
+    else {
+        return false
     }
 }
 

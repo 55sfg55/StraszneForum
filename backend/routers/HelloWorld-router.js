@@ -13,6 +13,7 @@ router.post('/users/login/', databaseController.login)
 router.post('/users/checkSession/', databaseController.checkSession)
 router.get('/users/:id/allEntries', databaseController.getAllEntriesOfUser)
 router.get('/users/:id', databaseController.getUserById);
+router.post('/entries/postentry/', databaseController.postEntry);
 router.get('/entries/:id', databaseController.getEntryById);
 
 router.get('/', (req, res) => {

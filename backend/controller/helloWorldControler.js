@@ -109,3 +109,16 @@ export function checkSession(req, res) {
     }
     res.json( tempResponse.responseDef ) 
 }
+
+export function postEntry(req, res) {
+    const tempResponse = new utils.helloWorldResponse()
+    tempResponse.setMessage("Failed to post new entry.")
+
+    if ( database.postEntry(req.body.token, req.body.content) ) {
+        tempResponse.setAll(true, "Entry posted.")
+    }
+    else {
+        tempResponse.setAll(false, "Entry was not posted.")
+    }
+    res.json( tempResponse.responseDef )
+}
