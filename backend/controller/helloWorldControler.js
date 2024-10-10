@@ -1,7 +1,6 @@
 import * as database from '../databases/helloWorldDatabase.js'
 import * as utils from '../utils/helloWorldUtils.js'
 
-const isNumeric = (str) => !isNaN(Number(str)) && /^\d+$/.test(str);
 
 export function getAllUsersAllEntries(req, res) {
     const tempResponse = new utils.helloWorldResponse()
@@ -17,7 +16,7 @@ export function getAllEntriesOfUser(req, res) {
     const tempResponse = new utils.helloWorldResponse()
     tempResponse.setMessage( "Failed to get userdata." )
 
-    let userID = Number(req.params.id);
+    const userID = Number(req.params.id);
 
     tempResponse.setData( database.userAllEntries( userID ) )
     // to implement:  Verify that the data has been successfully retrieved from the database.
