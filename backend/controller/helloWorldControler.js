@@ -135,3 +135,14 @@ export function deleteEntry(req, res) {
     }
     res.json( tempResponse.responseDef )
 }
+
+export function getAllEntries(req, res) {
+    const tempResponse = new utils.helloWorldResponse()
+    tempResponse.setMessage( "Failed to get all entries." )
+
+    tempResponse.setData( database.allEntries() )
+    // to implement:  Verify that the data has been successfully retrieved from the database.
+    tempResponse.setAll(true, "Successfully got all entries.")
+
+    res.json( tempResponse.responseDef )
+}

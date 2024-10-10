@@ -160,6 +160,10 @@ export function entryById(argId) {
     const temp = entries.find( entry => entry.id === argId );
     return temp;
 }
+export function allEntries(argId) {
+    const temp = entries.map(entry => JSON.parse(JSON.stringify(entry)));
+    return temp;
+}
 
 // add token and session handler
 export function checkPassword(argId, argPassword) {

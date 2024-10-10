@@ -50,6 +50,6 @@ app.use((err, req, res, next) => {
   
 
 app.listen(port, () => {
-    //console.log(`Server is crashing at  127.0.0.1:${ port }`)
+    console.log(`Server is crashing at  127.0.0.1:${ port }`)
 })
 
