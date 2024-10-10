@@ -64,26 +64,32 @@ function generateRandomKey(username) {
 
 let sessions = [
 ]
-const sessionTime = 1000 * 60 * 1 // secound * sec in a minute * minutes
+const sessionTime = 1000 * 60 * 10 // secound * sec in a minute * minutes
 
 function addSession(argID, argToken) {
     sessions.push( {
-        id: argID,
+        userID: argID,
         token: argToken,
         exp: Date.now() + sessionTime
     } )
 }
-function checkSessionByID(argID) {
+function checkSessionByUserID(argID) {
     const querry = sessions.find( session => session.id === argID )
-    if ( querry === undefined ) {
-        return true
+    if ( querry !== undefined && querry.exp < Date.now()) {
+        if (querry.exp > Date.now()) {
+            return {
+                userID: querry.id,
+            }
+        }
+        stopSessionByUserID( argID )
+        return false
     }
     else {
         return false
     }
 }
 export function checkSessionByToken(argToken) {
-    console.log(sessions, argToken)
+    ////console.log(sessions, argToken, Date.now())
     // Put here any validation etc.:
     argToken = String(argToken)
 
@@ -93,11 +99,20 @@ export function checkSessionByToken(argToken) {
         return false
     }
     else {
-        return true
+        if (querry.exp > Date.now()) {
+            return {
+                userID: querry.userID,
+            }
+        }
+        stopSessionByUserToken(argToken)
+        return false
     }
 }
 function stopSessionByUserID( argID ) {
     sessions = sessions.filter(session => session.id !== argID)
+}
+function stopSessionByUserToken( argToken ) {
+    sessions = sessions.filter(session => session.token !== argToken)
 }
 function clearSessions() {
     sessions = sessions.filter(session => session.exp > Date.now())
@@ -142,7 +157,11 @@ export function userAllEntries(argId) {
 }
 
 export function entryById(argId) {
-    const temp = entries.filter( entry => entry.id === argId ).map(entry => JSON.parse(JSON.stringify(entry)));;
+    const temp = entries.find( entry => entry.id === argId );
+    return temp;
+}
+export function allEntries(argId) {
+    const temp = entries.map(entry => JSON.parse(JSON.stringify(entry)));
     return temp;
 }
 
@@ -163,7 +182,7 @@ export function register( argUsername, argPassword ) {
     let temp;
     temp = users.find(user => user.username === argUsername)
     if( temp === undefined ) {
-        const newID = users[users.length - 1].id
+        const newID = users[users.length - 1].id + 1
         users.push(
             {
                 id: newID,
@@ -196,7 +215,41 @@ export function loginByUsername(argUsername, argPassword) {
     }
 }
 
+export function postEntry(argToken, argContent) {
+    const querry = checkSessionByToken(argToken)
+    if (querry) {
+        entries.push( {
+            id: entries[entries.length-1].id+1,
+            userId: querry.userID,
+            content: argContent
+        })
+        //console.log(entries, querry, users)
+        return true
+    }
+    else {
+        return false
+    }
+}
+
+export function delEntry(argToken, argEntryID) {
+    const querry = checkSessionByToken(argToken)
+    const entry = entryById(Number(argEntryID))
+    console.log(querry, entry, argToken, argEntryID, entries)
+    if (entry.userId == querry.userID) {
+        if (querry) {
+            entries = entries.filter(entry => entry.id !== Number(argEntryID))
+            return true
+        }
+        else {
+            return false
+        }
+    }
+    else {
+        return false
+    }
+}
+
 // session cleaning, once 10 sec for now.
 setInterval(() => {
     clearSessions()
-}, 1000 * 10);
+}, 1000 * 10 );

@@ -1,7 +1,6 @@
 import * as database from '../databases/helloWorldDatabase.js'
 import * as utils from '../utils/helloWorldUtils.js'
 
-const isNumeric = (str) => !isNaN(Number(str)) && /^\d+$/.test(str);
 
 export function getAllUsersAllEntries(req, res) {
     const tempResponse = new utils.helloWorldResponse()
@@ -17,7 +16,7 @@ export function getAllEntriesOfUser(req, res) {
     const tempResponse = new utils.helloWorldResponse()
     tempResponse.setMessage( "Failed to get userdata." )
 
-    let userID = Number(req.params.id);
+    const userID = Number(req.params.id);
 
     tempResponse.setData( database.userAllEntries( userID ) )
     // to implement:  Verify that the data has been successfully retrieved from the database.
@@ -109,4 +108,41 @@ export function checkSession(req, res) {
         tempResponse.setAll(false, "Invalid token.")
     }
     res.json( tempResponse.responseDef ) 
+}
+
+export function postEntry(req, res) {
+    const tempResponse = new utils.helloWorldResponse()
+    tempResponse.setMessage("Failed to post new entry.")
+
+    if ( database.postEntry(req.body.token, req.body.content) ) {
+        tempResponse.setAll(true, "Entry posted.")
+    }
+    else {
+        tempResponse.setAll(false, "Entry was not posted.")
+    }
+    res.json( tempResponse.responseDef )
+}
+
+export function deleteEntry(req, res) {
+    const tempResponse = new utils.helloWorldResponse()
+    tempResponse.setMessage("Failed to delete entry.")
+
+    if ( database.delEntry(req.body.token, req.body.entryID) ) {
+        tempResponse.setAll(true, "Entry removed.")
+    }
+    else {
+        tempResponse.setAll(false, "Entry was not removed.")
+    }
+    res.json( tempResponse.responseDef )
+}
+
+export function getAllEntries(req, res) {
+    const tempResponse = new utils.helloWorldResponse()
+    tempResponse.setMessage( "Failed to get all entries." )
+
+    tempResponse.setData( database.allEntries() )
+    // to implement:  Verify that the data has been successfully retrieved from the database.
+    tempResponse.setAll(true, "Successfully got all entries.")
+
+    res.json( tempResponse.responseDef )
 }

@@ -5,12 +5,12 @@ app.get('/hello_world', async (req, res) => {
 
 app.post('/hello_world', async (req, res) => {
     try {
-        console.log(req.body);
+        //console.log(req.body);
         const result = await dbo.collection("wpisy_tablica").insertOne({
             user: req.body.token,
             wpis: req.body.entry
         });
-        console.log("1 document inserted", result);
+        //console.log("1 document inserted", result);
         res.send('"Hello World!" posted.');
     } catch (err) {
         console.error('Failed to insert document', err);
