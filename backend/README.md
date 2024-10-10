@@ -233,8 +233,8 @@ output:
   "success": true,
   "message": "Successfully got all entries from all users, organised by users.",
   "data": [
-    { "id": 0, "username": "admin", allEntries: [Array] },
-    { "id": 1, "username": "admin2", allEntries: [Array] }
+    { "id": 0, "username": "admin", "allEntries": [Array] },
+    { "id": 1, "username": "admin2", "allEntries": [Array] }
   ]
 }
 ```
@@ -242,7 +242,7 @@ output:
 ```json
 [
   { "id": 0, "username": "admin", "allEntries": [ [Object], [Object] ] },
-  { "id": 1, "username": "admin2", allEntries: [ [Object], [Object] ] }
+  { "id": 1, "username": "admin2", "allEntries": [ [Object], [Object] ] }
 ]
 ```
 [Object] example (entry):
