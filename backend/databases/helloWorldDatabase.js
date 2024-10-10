@@ -89,7 +89,7 @@ function checkSessionByUserID(argID) {
     }
 }
 export function checkSessionByToken(argToken) {
-    //console.log(sessions, argToken, Date.now())
+    ////console.log(sessions, argToken, Date.now())
     // Put here any validation etc.:
     argToken = String(argToken)
 
@@ -157,7 +157,7 @@ export function userAllEntries(argId) {
 }
 
 export function entryById(argId) {
-    const temp = entries.filter( entry => entry.id === argId ).map(entry => JSON.parse(JSON.stringify(entry)));;
+    const temp = entries.find( entry => entry.id === argId );
     return temp;
 }
 
@@ -219,8 +219,26 @@ export function postEntry(argToken, argContent) {
             userId: querry.userID,
             content: argContent
         })
-        console.log(entries, querry, users)
+        //console.log(entries, querry, users)
         return true
+    }
+    else {
+        return false
+    }
+}
+
+export function delEntry(argToken, argEntryID) {
+    const querry = checkSessionByToken(argToken)
+    const entry = entryById(Number(argEntryID))
+    console.log(querry, entry, argToken, argEntryID, entries)
+    if (entry.userId == querry.userID) {
+        if (querry) {
+            entries = entries.filter(entry => entry.id !== Number(argEntryID))
+            return true
+        }
+        else {
+            return false
+        }
     }
     else {
         return false

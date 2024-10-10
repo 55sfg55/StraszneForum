@@ -32,7 +32,7 @@ To check if the API is running correctly, send a request to the root URL (`http:
 ```javascript
 fetch("http://127.0.0.1:3000/")
   .then(response => response.json())
-  .then(data => console.log(data))
+  .then(data => //console.log(data))
   .catch(error => console.error('Error:', error));
 ```
 Output:
@@ -61,7 +61,7 @@ Overview of the logic behind the endpoint design. Currently describing the messa
 ```javascript
 fetch("http://127.0.0.1:3000/helloworld/v0/users/0/")
   .then(response => response.json())
-  .then(data => console.log(data))
+  .then(data => //console.log(data))
   .catch(error => console.error('Error:', error));
 ```
 output:
@@ -79,7 +79,7 @@ output:
 ```javascript
 fetch("http://127.0.0.1:3000/helloworld/v0/users/0/allentries")
   .then(response => response.json())
-  .then(data => console.log(data))
+  .then(data => //console.log(data))
   .catch(error => console.error('Error:', error));
 
 ```
@@ -125,7 +125,7 @@ fetch("http://127.0.0.1:3000/helloworld/v0/users/login", {
   })
 })
   .then(response => response.json())
-  .then(data => console.log(JSON.stringify(data)))
+  .then(data => //console.log(JSON.stringify(data)))
   .catch(error => console.error('Error:', error));
 ```
 output:
@@ -159,7 +159,7 @@ fetch("http://127.0.0.1:3000/helloworld/v0/users/register", {
   })
 })
   .then(response => response.json())
-  .then(data => console.log(JSON.stringify(data)))
+  .then(data => //console.log(JSON.stringify(data)))
   .catch(error => console.error('Error:', error));
 ```
 output:
@@ -188,7 +188,7 @@ fetch("http://127.0.0.1:3000/helloworld/v0/users/checksession", {
   })
 })
   .then(response => response.json())
-  .then(data => console.log(data))
+  .then(data => //console.log(data))
   .catch(error => console.error('Error:', error));
 ```
 output:
@@ -203,7 +203,7 @@ output:
 ```javascript
 fetch("http://127.0.0.1:3000/helloworld/v0/entries/0")
   .then(response => response.json())
-  .then(data => console.log(data))
+  .then(data => //console.log(data))
   .catch(error => console.error('Error:', error));
 ```
 output:
@@ -224,7 +224,7 @@ output:
 ```javascript
   fetch("http://127.0.0.1:3000/helloworld/v0/allusersallentries")
    .then(response => response.json())
-   .then(data => console.log(data))
+   .then(data => //console.log(data))
    .catch(error => console.error('Error:', error));
 ```
 output:

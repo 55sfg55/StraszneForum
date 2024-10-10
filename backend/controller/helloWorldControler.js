@@ -122,3 +122,16 @@ export function postEntry(req, res) {
     }
     res.json( tempResponse.responseDef )
 }
+
+export function deleteEntry(req, res) {
+    const tempResponse = new utils.helloWorldResponse()
+    tempResponse.setMessage("Failed to delete entry.")
+
+    if ( database.delEntry(req.body.token, req.body.entryID) ) {
+        tempResponse.setAll(true, "Entry removed.")
+    }
+    else {
+        tempResponse.setAll(false, "Entry was not removed.")
+    }
+    res.json( tempResponse.responseDef )
+}
