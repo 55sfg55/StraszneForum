@@ -109,8 +109,8 @@ output:
 body:
 ```json
 {
-  username: "admin",
-  password: "1234"
+  "username": "admin",
+  "password": "1234"
 }
 ```
 ```javascript
@@ -135,7 +135,6 @@ output:
   "message":"Password is correct.  Successfully processed request.",
   "data":
   {
-    "isPasswordCorrect":true,
     "token":"m23vnvoi-1728507086803"
   }
 }
@@ -144,8 +143,8 @@ output:
 body:
 ```json
 {
-  username: "admin7",
-  password: "1234"
+  "username": "admin7",
+  "password": "1234"
 }
 ```
 ```javascript
@@ -175,7 +174,7 @@ output:
 body
 ```json
 {
-  token: "m23vy9eh-1728507571146"
+  "token": "m23vy9eh-1728507571146"
 }
 ```
 ```javascript
@@ -195,9 +194,9 @@ fetch("http://127.0.0.1:3000/helloworld/v0/users/checksession", {
 output:
 ```
 {
-  success: true,
-  message: 'Token is correct.',
-  data: null
+  "success": true,
+  "message": "Token is correct.",
+  "data": null
 }
 ```
 6. GET /helloworld/v0/entries/:id - get entry based on id.
@@ -210,13 +209,13 @@ fetch("http://127.0.0.1:3000/helloworld/v0/entries/0")
 output:
 ```json
 {
-  success: true,
-  message: 'Successfully got entry by ID.',
-  data: [
+  "success": true,
+  "message": "Successfully got entry by ID.",
+  "data": [
   {
-    id: 0,
-    userId: 0,
-    content: 'Wpis testowy - hardcoded'
+    "id": 0,
+    "userId": 0,
+    "content": "Wpis testowy - hardcoded"
   }
   ]
 }
@@ -231,27 +230,27 @@ output:
 output:
 ```json
 {
-  success: true,
-  message: 'Successfully got all entries from all users, organised by users.',
-  data: [
-    { id: 0, username: 'admin', allEntries: [Array] },
-    { id: 1, username: 'admin2', allEntries: [Array] }
+  "success": true,
+  "message": "Successfully got all entries from all users, organised by users.",
+  "data": [
+    { "id": 0, "username": "admin", "allEntries": [Array] },
+    { "id": 1, "username": "admin2", "allEntries": [Array] }
   ]
 }
 ```
 [Array] example (array of user's entries):
 ```json
 [
-  { id: 0, username: 'admin', allEntries: [ [Object], [Object] ] },
-  { id: 1, username: 'admin2', allEntries: [ [Object], [Object] ] }
+  { "id": 0, "username": "admin", "allEntries": [ [Object], [Object] ] },
+  { "id": 1, "username": "admin2", "allEntries": [ [Object], [Object] ] }
 ]
 ```
 [Object] example (entry):
 ```json
 {
-    id: 2,
-    userId: 0,
-    content: 'wpis testowy nr. 2 pierwszego admina - hardcoded'
+    "id": 2,
+    "userId": 0,
+    "content": "wpis testowy nr. 2 pierwszego admina - hardcoded"
 }
 ```
 
