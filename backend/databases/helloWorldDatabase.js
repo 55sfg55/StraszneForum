@@ -131,6 +131,13 @@ export function allUsersAllEntries() {
     });
 }
 
+export function usersByManyIDs(argManyIDs) {
+    const idSet = new Set(argManyIDs);
+    return users
+        .filter(obj => idSet.has(obj.id)) 
+        .map(obj => JSON.parse(JSON.stringify(obj))); 
+}
+
 export function userUsernameToId(argUsername) {
     let temp;
     temp = users.find(user => user.username === argUsername)
@@ -154,6 +161,13 @@ export function userIdToData(argId) {
 export function userAllEntries(argId) {
     const temp = entries.filter( entry => entry.userId === argId ).map(entry => JSON.parse(JSON.stringify(entry)));
     return temp;
+}
+
+export function entriesByManyIDs(argManyIDs) {
+    const idSet = new Set(argManyIDs);
+    return entries
+        .filter(obj => idSet.has(obj.id)) 
+        .map(obj => JSON.parse(JSON.stringify(obj))); 
 }
 
 export function entryById(argId) {
