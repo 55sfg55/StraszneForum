@@ -20,6 +20,7 @@ router.get('/users/:id', databaseController.getUserById);
 router.post('/entries/postentry/', databaseController.postEntry);
 router.delete('/entries/deleteentry/', databaseController.deleteEntry);
 router.get('/entries/all/', databaseController.getAllEntries);
+router.get('/entries/many/:manyids', databaseController.getManyEntriesByID);
 router.get('/entries/:id', databaseController.getEntryById);
 
 router.get('/', (req, res) => {

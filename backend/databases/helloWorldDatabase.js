@@ -163,6 +163,13 @@ export function userAllEntries(argId) {
     return temp;
 }
 
+export function entriesByManyIDs(argManyIDs) {
+    const idSet = new Set(argManyIDs);
+    return entries
+        .filter(obj => idSet.has(obj.id)) 
+        .map(obj => JSON.parse(JSON.stringify(obj))); 
+}
+
 export function entryById(argId) {
     const temp = entries.find( entry => entry.id === argId );
     return temp;

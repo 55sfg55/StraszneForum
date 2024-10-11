@@ -165,3 +165,15 @@ export function getAllEntries(req, res) {
 
     res.json( tempResponse.responseDef )
 }
+
+export function getManyEntriesByID(req, res) {
+    const tempResponse = new utils.helloWorldResponse()
+    tempResponse.setMessage( 'Failed to get many users by ID.' )
+
+    // console.log(JSON.parse(`{"manyids": ${req.params.asd.split('=')[1]}}`));
+    const parsedParams = JSON.parse(`{"manyids": ${req.params.manyids}}`); 
+
+    const querry = database.entriesByManyIDs( parsedParams.manyids )
+
+    res.json( querry )
+}
