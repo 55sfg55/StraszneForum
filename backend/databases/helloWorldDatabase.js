@@ -131,6 +131,13 @@ export function allUsersAllEntries() {
     });
 }
 
+export function usersByManyIDs(argManyIDs) {
+    const idSet = new Set(argManyIDs);
+    return users
+        .filter(obj => idSet.has(obj.id)) 
+        .map(obj => JSON.parse(JSON.stringify(obj))); 
+}
+
 export function userUsernameToId(argUsername) {
     let temp;
     temp = users.find(user => user.username === argUsername)

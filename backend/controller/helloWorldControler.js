@@ -1,7 +1,7 @@
 import * as database from '../databases/helloWorldDatabase.js'
 import * as utils from '../utils/helloWorldUtils.js'
 
-
+// General requestes:
 export function getAllUsersAllEntries(req, res) {
     const tempResponse = new utils.helloWorldResponse()
     tempResponse.setMessage( "Failed to get all entries from all users, organised by users." )
@@ -12,6 +12,8 @@ export function getAllUsersAllEntries(req, res) {
     res.json( tempResponse.responseDef )
 }
 
+
+// User-related requestes:
 export function getAllEntriesOfUser(req, res) {
     const tempResponse = new utils.helloWorldResponse()
     tempResponse.setMessage( "Failed to get userdata." )
@@ -35,17 +37,20 @@ export function getUserById(req, res) {
     res.json( tempResponse.responseDef )
 }
 
-export function getEntryById(req, res) {
+export function getManyUsersByID(req, res) {
     const tempResponse = new utils.helloWorldResponse()
-    tempResponse.setMessage( "Failed to get entry by ID." )
+    tempResponse.setMessage( 'Failed to get many users by ID.' )
 
-    tempResponse.setData( database.entryById(Number(req.params.id)) )
-    // to implement:  Verify that the data has been successfully retrieved from the database.
-    tempResponse.setAll(true, "Successfully got entry by ID.")
+    // console.log(JSON.parse(`{"manyids": ${req.params.asd.split('=')[1]}}`));
+    const parsedParams = JSON.parse(`{"manyids": ${req.params.manyids}}`); 
 
-    res.json( tempResponse.responseDef )
+    const querry = database.usersByManyIDs( parsedParams.manyids )
+
+    res.json( querry )
 }
 
+
+// Session management requestes:
 export function login(req, res) {
     const tempResponse = new utils.helloWorldResponse()
     tempResponse.setMessage("Failed to check password.")
@@ -108,6 +113,20 @@ export function checkSession(req, res) {
         tempResponse.setAll(false, "Invalid token.")
     }
     res.json( tempResponse.responseDef ) 
+}
+
+
+
+// Entry-related requestes:
+export function getEntryById(req, res) {
+    const tempResponse = new utils.helloWorldResponse()
+    tempResponse.setMessage( "Failed to get entry by ID." )
+
+    tempResponse.setData( database.entryById(Number(req.params.id)) )
+    // to implement:  Verify that the data has been successfully retrieved from the database.
+    tempResponse.setAll(true, "Successfully got entry by ID.")
+
+    res.json( tempResponse.responseDef )
 }
 
 export function postEntry(req, res) {

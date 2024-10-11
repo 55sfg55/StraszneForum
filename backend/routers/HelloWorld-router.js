@@ -8,11 +8,15 @@ import * as utils from '../utils/helloWorldUtils.js'
 
 // Sample route: Get all users
 router.get('/allUsersAllEntries', databaseController.getAllUsersAllEntries)
-router.post('/users/register/', databaseController.register)
-router.post('/users/login/', databaseController.login)
-router.post('/users/checkSession/', databaseController.checkSession)
+
+router.post('/sessions/register/', databaseController.register)
+router.post('/sessions/login/', databaseController.login)
+router.post('/sessions/checkSession/', databaseController.checkSession)
+
 router.get('/users/:id/allEntries', databaseController.getAllEntriesOfUser)
+router.get('/users/many/:manyids', databaseController.getManyUsersByID)
 router.get('/users/:id', databaseController.getUserById);
+
 router.post('/entries/postentry/', databaseController.postEntry);
 router.delete('/entries/deleteentry/', databaseController.deleteEntry);
 router.get('/entries/all/', databaseController.getAllEntries);
