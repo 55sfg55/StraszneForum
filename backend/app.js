@@ -24,7 +24,7 @@ app.use(cors());
 
 // Routers
 app.use('/helloworld/v0/', helloWorldRouter)
-app.use('/sessions/v0/', sessionsRouter)
+app.use('/sessions/', sessionsRouter) // This one should stay the same, having login, and register option. The rest should be handled by passing token to the right request, and processing at backend.
 
 
 

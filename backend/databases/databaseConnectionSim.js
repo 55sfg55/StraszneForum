@@ -1,3 +1,7 @@
+/*
+This file is intended to simulate database connection. Import is our connection, and functions represent specific querries.
+*/
+
 export let users = [
     {
         id: 0,
