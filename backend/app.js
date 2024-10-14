@@ -6,6 +6,7 @@ const port = 3000;
 
 import bodyParser from 'body-parser';
 import helloWorldRouter from './routers/HelloWorld-router.js'
+import sessionsRouter from './routers/sessionRouter.js'
 
 import * as utils from './utils/helloWorldUtils.js'
 
@@ -23,6 +24,7 @@ app.use(cors());
 
 // Routers
 app.use('/helloworld/v0/', helloWorldRouter)
+app.use('/sessions/v0/', sessionsRouter)
 
 
 
