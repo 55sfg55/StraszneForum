@@ -1,127 +1,12 @@
-export let users = [
-    {
-        id: 0,
-        username: "admin",
-        password: "1234",
-    },
-    {
-        id: 1,
-        username: "admin2",
-        password: "abcd",
-}]
-export let entries = [
-    {
-        id: 0,
-        userId: 0,
-        content: "Wpis testowy - hardcoded"
-    },
-    {
-        id: 1,
-        userId: 1,
-        content: "Wpis testowy drugiego adminka - hardcoded"
-    },
-    {
-        id: 2,
-        userId: 0,
-        content: "wpis testowy nr. 2 pierwszego admina - hardcoded"
-    },
-    {
-        id: 3,
-        userId: 1,
-        content: "Wpis testowy nr.2 DRUGIEGO aminka - hardcoded"
-    },
-    
-]
-
-function generateRandomKey(username) {
-    // Simple hash function to convert the username to a numeric value
-    function hashString(str) {
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-            hash = (hash << 5) - hash + str.charCodeAt(i);
-            hash |= 0; // Convert to 32bit integer
-        }
-        return Math.abs(hash);
-    }
-
-    // Get a hash value from the username
-    const hashValue = hashString(username);
-
-    // Get the current timestamp
-    const timestamp = Date.now();
-
-    // Generate a random string based on the hash value and timestamp
-    const randomChars = (hashValue + timestamp)
-        .toString(36) // Convert to base-36 to get a mix of alphanumeric characters
-        .substring(0, 24); // Get the first 24 characters for the random string
-
-    // Create the final random key
-    const randomKey = `${randomChars}-${timestamp}`;
-
-    return randomKey;
-}
+import * as database from './databaseConnectionSim.js'
+import { checkSessionByToken } from './sessionsDatabase.js'
 
 
-let sessions = [
-]
-const sessionTime = 1000 * 60 * 10 // secound * sec in a minute * minutes
-
-function addSession(argID, argToken) {
-    sessions.push( {
-        userID: argID,
-        token: argToken,
-        exp: Date.now() + sessionTime
-    } )
-}
-function checkSessionByUserID(argID) {
-    const querry = sessions.find( session => session.id === argID )
-    if ( querry !== undefined && querry.exp < Date.now()) {
-        if (querry.exp > Date.now()) {
-            return {
-                userID: querry.id,
-            }
-        }
-        stopSessionByUserID( argID )
-        return false
-    }
-    else {
-        return false
-    }
-}
-export function checkSessionByToken(argToken) {
-    ////console.log(sessions, argToken, Date.now())
-    // Put here any validation etc.:
-    argToken = String(argToken)
-
-
-    const querry = sessions.find( session => session.token  === argToken )
-    if ( querry === undefined ) {
-        return false
-    }
-    else {
-        if (querry.exp > Date.now()) {
-            return {
-                userID: querry.userID,
-            }
-        }
-        stopSessionByUserToken(argToken)
-        return false
-    }
-}
-function stopSessionByUserID( argID ) {
-    sessions = sessions.filter(session => session.id !== argID)
-}
-function stopSessionByUserToken( argToken ) {
-    sessions = sessions.filter(session => session.token !== argToken)
-}
-function clearSessions() {
-    sessions = sessions.filter(session => session.exp > Date.now())
-}
 
 export function allUsersAllEntries() {
-    return users.map(user => {
+    return database.users.map(user => {
         // Filter entries for the current user
-        const userEntries = entries.filter(entry => entry.userId === user.id).map(entry => JSON.parse(JSON.stringify(entry)));
+        const userEntries = database.entries.filter(entry => entry.userId === user.id).map(entry => JSON.parse(JSON.stringify(entry)));
 
         return {
             id: user.id,
@@ -133,14 +18,14 @@ export function allUsersAllEntries() {
 
 export function usersByManyIDs(argManyIDs) {
     const idSet = new Set(argManyIDs);
-    return users
+    return database.users
         .filter(obj => idSet.has(obj.id)) 
         .map(obj => JSON.parse(JSON.stringify(obj))); 
 }
 
 export function userUsernameToId(argUsername) {
     let temp;
-    temp = users.find(user => user.username === argUsername)
+    temp = database.users.find(user => user.username === argUsername)
     temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
     if (temp) {
         temp.password = "Access denied."
@@ -150,7 +35,7 @@ export function userUsernameToId(argUsername) {
 
 export function userIdToData(argId) {
     let temp;
-    temp = users.find(user => user.id === argId)
+    temp = database.users.find(user => user.id === argId)
     temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
     if(temp && temp.password) {
         temp.password = "Access denied."
@@ -159,81 +44,31 @@ export function userIdToData(argId) {
 }
 
 export function userAllEntries(argId) {
-    const temp = entries.filter( entry => entry.userId === argId ).map(entry => JSON.parse(JSON.stringify(entry)));
+    const temp = database.entries.filter( entry => entry.userId === argId ).map(entry => JSON.parse(JSON.stringify(entry)));
     return temp;
 }
 
 export function entriesByManyIDs(argManyIDs) {
     const idSet = new Set(argManyIDs);
-    return entries
+    return database.entries
         .filter(obj => idSet.has(obj.id)) 
         .map(obj => JSON.parse(JSON.stringify(obj))); 
 }
 
 export function entryById(argId) {
-    const temp = entries.find( entry => entry.id === argId );
+    const temp = database.entries.find( entry => entry.id === argId );
     return temp;
 }
 export function allEntries(argId) {
-    const temp = entries.map(entry => JSON.parse(JSON.stringify(entry)));
+    const temp = database.entries.map(entry => JSON.parse(JSON.stringify(entry)));
     return temp;
-}
-
-// add token and session handler
-export function checkPassword(argId, argPassword) {
-    let temp;
-    temp = users.find(user => user.id === argId && user.password === argPassword)
-    temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
-    return !(temp === undefined)
-}
-export function checkPasswordByUsername(argUsername, argPassword) {
-    let temp;
-    temp = users.find(user => user.username === argUsername && user.password === argPassword)
-    temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
-    return !(temp === undefined)
-}
-export function register( argUsername, argPassword ) {
-    let temp;
-    temp = users.find(user => user.username === argUsername)
-    if( temp === undefined ) {
-        const newID = users[users.length - 1].id + 1
-        users.push(
-            {
-                id: newID,
-                username: argUsername,
-                password: argPassword
-            }
-        )
-        return true
-    }
-    return false
-}
-export function loginByUsername(argUsername, argPassword) {
-    let temp;
-    temp = users.find(user => user.username === argUsername && user.password === argPassword)
-    temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
-    if ( !(temp === undefined) ) {
-        stopSessionByUserID( temp.id )
-        const token = generateRandomKey(argUsername)
-        addSession(temp.id, token)
-        return {
-            isPasswordCorrect: true,
-            token: token
-        }
-    }
-    else {
-        return {
-            isPasswordCorrect: false,
-            token: ""
-        }
-    }
 }
 
 export function postEntry(argToken, argContent) {
     const querry = checkSessionByToken(argToken)
     if (querry) {
-        entries.push( {
-            id: entries[entries.length-1].id+1,
+       database.entries.push( {
+            id: database.entries[database.entries.length-1].id+1,
             userId: querry.userID,
             content: argContent
         })
@@ -248,10 +83,10 @@ export function postEntry(argToken, argContent) {
 export function delEntry(argToken, argEntryID) {
     const querry = checkSessionByToken(argToken)
     const entry = entryById(Number(argEntryID))
-    console.log(querry, entry, argToken, argEntryID, entries)
+    //console.log(querry, entry, argToken, argEntryID, database.entries)
     if (entry.userId == querry.userID) {
         if (querry) {
-            entries = entries.filter(entry => entry.id !== Number(argEntryID))
+            database.delEntry( Number(argEntryID) )
             return true
         }
         else {
@@ -262,8 +97,3 @@ export function delEntry(argToken, argEntryID) {
         return false
     }
 }
-
-// session cleaning, once 10 sec for now.
-setInterval(() => {
-    clearSessions()
-}, 1000 * 10 );

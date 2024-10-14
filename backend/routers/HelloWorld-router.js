@@ -3,15 +3,16 @@ import express from 'express';
 const router = express.Router();
 
 import * as databaseController from '../controller/helloWorldControler.js'
+import * as sessionsController from '../controller/sessionController.js'
 
 import * as utils from '../utils/helloWorldUtils.js'
 
 // Sample route: Get all users
 router.get('/allUsersAllEntries', databaseController.getAllUsersAllEntries)
 
-router.post('/sessions/register/', databaseController.register)
-router.post('/sessions/login/', databaseController.login)
-router.post('/sessions/checkSession/', databaseController.checkSession)
+router.post('/sessions/register/', sessionsController.register)
+router.post('/sessions/login/', sessionsController.login)
+router.post('/sessions/checkSession/', sessionsController.checkSession)
 
 router.get('/users/:id/allEntries', databaseController.getAllEntriesOfUser)
 router.get('/users/many/:manyids', databaseController.getManyUsersByID)
