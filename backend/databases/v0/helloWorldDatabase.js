@@ -1,4 +1,4 @@
-import * as database from './databaseConnectionSim.js'
+import * as database from '../databaseConnectionSim.js'
 import { checkSessionByToken } from './sessionsDatabase.js'
 
 
@@ -6,7 +6,7 @@ import { checkSessionByToken } from './sessionsDatabase.js'
 export function allUsersAllEntries() {
     return database.users.map(user => {
         // Filter entries for the current user
-        const userEntries = database.entries.filter(entry => entry.userId === user.id).map(entry => JSON.parse(JSON.stringify(entry)));
+        const userEntries = database.allUsersAllEntries()
 
         return {
             id: user.id,
@@ -25,7 +25,7 @@ export function usersByManyIDs(argManyIDs) {
 
 export function userUsernameToId(argUsername) {
     let temp;
-    temp = database.users.find(user => user.username === argUsername)
+    temp = database.getUserByUsername(argUsername)
     temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
     if (temp) {
         temp.password = "Access denied."
@@ -35,7 +35,7 @@ export function userUsernameToId(argUsername) {
 
 export function userIdToData(argId) {
     let temp;
-    temp = database.users.find(user => user.id === argId)
+    temp = database.getUserByID(argId)
     temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
     if(temp && temp.password) {
         temp.password = "Access denied."
@@ -44,34 +44,27 @@ export function userIdToData(argId) {
 }
 
 export function userAllEntries(argId) {
-    const temp = database.entries.filter( entry => entry.userId === argId ).map(entry => JSON.parse(JSON.stringify(entry)));
+    const temp = database.getUserWithAllEntries(argId)
     return temp;
 }
 
 export function entriesByManyIDs(argManyIDs) {
-    const idSet = new Set(argManyIDs);
-    return database.entries
-        .filter(obj => idSet.has(obj.id)) 
-        .map(obj => JSON.parse(JSON.stringify(obj))); 
+    return database.getFromEntriesManyIDs(argManyIDs)
 }
 
 export function entryById(argId) {
-    const temp = database.entries.find( entry => entry.id === argId );
+    const temp = database.getEntryByID(argId)
     return temp;
 }
 export function allEntries(argId) {
-    const temp = database.entries.map(entry => JSON.parse(JSON.stringify(entry)));
+    const temp = database.getTableEntries()
     return temp;
 }
 
 export function postEntry(argToken, argContent) {
-    const querry = checkSessionByToken(argToken)
-    if (querry) {
-       database.entries.push( {
-            id: database.entries[database.entries.length-1].id+1,
-            userId: querry.userID,
-            content: argContent
-        })
+    const session = checkSessionByToken(argToken)
+    if (session) {
+       database.postEntry(session.userID, argContent)
         //console.log(entries, querry, users)
         return true
     }
@@ -82,7 +75,7 @@ export function postEntry(argToken, argContent) {
 
 export function delEntry(argToken, argEntryID) {
     const querry = checkSessionByToken(argToken)
-    const entry = entryById(Number(argEntryID))
+    const entry = entryById(Number(argEntryID)) // Can be replace by "remove entry with entryID == ? AND userID == ?"
     //console.log(querry, entry, argToken, argEntryID, database.entries)
     if (entry.userId == querry.userID) {
         if (querry) {

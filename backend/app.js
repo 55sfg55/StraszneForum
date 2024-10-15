@@ -5,10 +5,10 @@ const app = express();
 const port = 3000;
 
 import bodyParser from 'body-parser';
-import helloWorldRouter from './routers/HelloWorld-router.js'
-import sessionsRouter from './routers/sessionRouter.js'
+import helloWorldRouter from './routers/v0/HelloWorld-router.js'
+import sessionsRouter from './routers/shared/sessionRouter.js'
 
-import * as utils from './utils/helloWorldUtils.js'
+import * as utils from './utils/v0/helloWorldUtils.js'
 
 
 
@@ -22,7 +22,7 @@ app.use(cors());
 
 
 
-// Routers
+// Routers:
 app.use('/helloworld/v0/', helloWorldRouter)
 app.use('/sessions/', sessionsRouter) // This one should stay the same, having login, and register option. The rest should be handled by passing token to the right request, and processing at backend.
 

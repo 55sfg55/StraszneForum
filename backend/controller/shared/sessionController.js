@@ -1,5 +1,5 @@
-import * as database from '../databases/sessionsDatabase.js'
-import * as utils from '../utils/helloWorldUtils.js'
+import * as database from '../../databases/v0/sessionsDatabase.js'
+import * as utils from '../../utils/v0/helloWorldUtils.js'
 
 // Session management requestes:
 export function login(req, res) {

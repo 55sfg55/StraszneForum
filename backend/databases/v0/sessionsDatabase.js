@@ -1,4 +1,4 @@
-import { users } from './databaseConnectionSim.js'
+import * as database from '../databaseConnectionSim.js'
 
 
 
@@ -103,39 +103,34 @@ function clearSessions() {
 // add token and session handler
 export function checkPassword(argId, argPassword) {
     let temp;
-    temp = users.find(user => user.id === argId && user.password === argPassword)
+    temp = database.getUserWithPassswordAndID(argId, argPassword)
     temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
     return !(temp === undefined)
 }
 export function checkPasswordByUsername(argUsername, argPassword) {
     let temp;
-    temp = users.find(user => user.username === argUsername && user.password === argPassword)
+    temp = database.getUserWithPassswordAndUsername(argUsername, argPassword)
     temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
     return !(temp === undefined)
 }
 export function register( argUsername, argPassword ) {
     let temp;
-    temp = users.find(user => user.username === argUsername)
-    if( temp === undefined ) {
-        const newID = users[users.length - 1].id + 1
-        users.push(
-            {
-                id: newID,
-                username: argUsername,
-                password: argPassword
-            }
-        )
+    temp = database.getUserByUsernameVersion2(argUsername)
+    //console.log(temp)
+    if( temp === false ) {
+        database.postUser(argUsername, argPassword)
         return true
     }
     return false
 }
 export function loginByUsername(argUsername, argPassword) {
     let temp;
-    temp = users.find(user => user.username === argUsername && user.password === argPassword)
+    temp = database.getUserWithPassswordAndUsername(argUsername, argPassword)
     temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
     if ( !(temp === undefined) ) {
+        //console.log(temp)
         stopSessionByUserID( temp.id )
-        const token = generateRandomKey(argUsername)
+        const token = generateRandomKey(temp.username) // new token MUST be made based on querried data from the database.
         addSession(temp.id, token)
         return {
             isPasswordCorrect: true,

@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-import * as sessionsController from '../controller/sessionController.js'
+import * as sessionsController from '../../controller/shared/sessionController.js'
 
 router.post('/register/', sessionsController.register)
 router.post('/login/', sessionsController.login)

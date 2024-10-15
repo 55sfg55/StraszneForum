@@ -40,3 +40,77 @@ export let entries = [
 export function delEntry(argEntryID) {
     entries = entries.filter(entry => entry.id !== argEntryID)
 }
+
+export function allUsersAllEntries() {
+    return users.map(user => {
+        // Filter entries for the current user
+        return entries.filter(entry => entry.userId === user.id).map(entry => JSON.parse(JSON.stringify(entry)))
+    })
+}
+
+export function getUserByUsername(argUsername) {
+    return    users.find(user => user.username === argUsername)
+}
+
+export function getUserByID(argID) {
+    return    users.find(user => user.id === argID)
+}
+
+export function getUserWithAllEntries(argID) {
+    return    entries.filter( entry => entry.userId === argID ).map(entry => JSON.parse(JSON.stringify(entry)));
+}
+
+export function getTableEntries() {
+    return entries.map(entry => JSON.parse(JSON.stringify(entry)));
+}
+
+export function getEntryByID(argID) {
+    return  entries.find( entry => entry.id === argID );
+}
+
+export function getFromEntriesManyIDs(argIDs) {
+    const idSet = new Set(argManyIDs);
+    return    entries
+                .filter(obj => idSet.has(obj.id)) 
+                .map(obj => JSON.parse(JSON.stringify(obj))); 
+}
+
+export function postEntry(userID, argContent) {
+    entries.push( {
+        id: entries[entries.length-1].id+1,
+        userId: userID,
+        content: argContent
+    })
+}
+
+export function getUserWithPassswordAndID(argUserID, argPassword) {
+    return    (users.find(user => user.id === argUserID && user.password === argPassword) === undefined)
+}
+
+export function getUserWithPassswordAndUsername(argUsername, argPassword) {
+    const temp = users.find(user => user.username === argUsername && user.password === argPassword)
+    if ( !(temp === undefined) ) {
+        return {
+            id: temp.id,
+            username: temp.username
+        }
+    }
+    else {
+        return undefined
+    }
+}
+
+export function postUser(argUsername, argPassword) {
+    users.push(
+        {
+            id: users[users.length - 1].id + 1,
+            username: argUsername,
+            password: argPassword
+        }
+    )
+    return true
+}
+
+export function getUserByUsernameVersion2(argUsername) {
+    return !(users.find(user => user.username === argUsername) === undefined)
+}

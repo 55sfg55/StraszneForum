@@ -1,5 +1,5 @@
-import * as database from '../databases/helloWorldDatabase.js'
-import * as utils from '../utils/helloWorldUtils.js'
+import * as database from '../../databases/v0/helloWorldDatabase.js'
+import * as utils from '../../utils/v0/helloWorldUtils.js'
 
 // General requestes:
 export function getAllUsersAllEntries(req, res) {
