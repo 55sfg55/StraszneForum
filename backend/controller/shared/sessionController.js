@@ -4,7 +4,7 @@ import * as utils from '../../utils/v0/helloWorldUtils.js'
 // Session management requestes:
 export function login(req, res) {
     const tempResponse = new utils.helloWorldResponse()
-    tempResponse.setMessage("Failed to check password.")
+    tempResponse.setMessage("Failed to login.")
     if (req.body.id) {
         tempResponse.setData( { isPasswordCorrect: database.checkPassword(Number(req.body.id), String(req.body.password)) } )
         // to implement:  Verify that the data has been successfully retrieved from the database.

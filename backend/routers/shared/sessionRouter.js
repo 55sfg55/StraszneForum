@@ -5,7 +5,7 @@ import * as sessionsController from '../../controller/shared/sessionController.j
 
 router.post('/register/', sessionsController.register)
 router.post('/login/', sessionsController.login)
-router.post('/checkSession/', sessionsController.checkSession)
+router.post('/verifySession/', sessionsController.checkSession)
 
 router.get('/', (req, res) => {
     const tempResponse = new utils.helloWorldResponse()
