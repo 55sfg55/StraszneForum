@@ -1,5 +1,5 @@
-import * as database from '../../databases/v0/helloWorldDatabase.js'
-import * as utils from '../../utils/v0/helloWorldUtils.js'
+import * as database from '../databases/helloWorldDatabase.js'
+import * as utils from '../utils/helloWorldUtils.js'
 
 // General requestes:
 export function getAllUsersAllEntries(req, res) {
@@ -45,8 +45,16 @@ export function getManyUsersByID(req, res) {
     const parsedParams = JSON.parse(`{"manyids": ${req.params.manyids}}`); 
 
     const querry = database.usersByManyIDs( parsedParams.manyids )
+    // to implement:  Verify that the data has been successfully retrieved from the database.
+    tempResponse.setAll(true, "Successfully got many users by ID.")
 
-    res.json( querry )
+    tempResponse.setData(
+        {
+            manyUsersData: querry
+        }
+    )
+
+    res.json( tempResponse.responseDef )
 }
 
 // Entry-related requestes:
@@ -100,12 +108,20 @@ export function getAllEntries(req, res) {
 
 export function getManyEntriesByID(req, res) {
     const tempResponse = new utils.helloWorldResponse()
-    tempResponse.setMessage( 'Failed to get many users by ID.' )
+    tempResponse.setMessage( 'Failed to get many entries by ID.' )
 
     // console.log(JSON.parse(`{"manyids": ${req.params.asd.split('=')[1]}}`));
     const parsedParams = JSON.parse(`{"manyids": ${req.params.manyids}}`); 
 
     const querry = database.entriesByManyIDs( parsedParams.manyids )
+    // to implement:  Verify that the data has been successfully retrieved from the database.
+    tempResponse.setAll(true, "Successfully got many entries by ID.")
 
-    res.json( querry )
+    tempResponse.setData(
+        {
+            manyEntries: querry
+        }
+    )
+
+    res.json( tempResponse.responseDef )
 }

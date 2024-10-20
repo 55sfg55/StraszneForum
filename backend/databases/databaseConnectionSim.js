@@ -2,7 +2,7 @@
 This file is intended to simulate database connection. Import is our connection, and functions represent specific querries.
 */
 
-export let users = [
+let users = [
     {
         id: 0,
         username: "admin",
@@ -13,7 +13,7 @@ export let users = [
         username: "admin2",
         password: "abcd",
 }]
-export let entries = [
+let entries = [
     {
         id: 0,
         userId: 0,
@@ -46,6 +46,18 @@ export function allUsersAllEntries() {
         // Filter entries for the current user
         return entries.filter(entry => entry.userId === user.id).map(entry => JSON.parse(JSON.stringify(entry)))
     })
+/*
+    users.map(user => {
+        // Filter entries for the current user
+        const userEntries = database.allUsersAllEntries()
+
+        return {
+            id: user.id,
+            username: user.username,
+            allEntries: userEntries
+        };
+    });
+*/
 }
 
 export function getUserByUsername(argUsername) {
@@ -68,7 +80,7 @@ export function getEntryByID(argID) {
     return  entries.find( entry => entry.id === argID );
 }
 
-export function getFromEntriesManyIDs(argIDs) {
+export function getFromEntriesManyIDs(argManyIDs) {
     const idSet = new Set(argManyIDs);
     return    entries
                 .filter(obj => idSet.has(obj.id)) 
@@ -113,4 +125,11 @@ export function postUser(argUsername, argPassword) {
 
 export function getUserByUsernameVersion2(argUsername) {
     return !(users.find(user => user.username === argUsername) === undefined)
+}
+
+export function getManyUsersByID(argManyIDs) {
+    const idSet = new Set(argManyIDs);
+    return users
+        .filter(obj => idSet.has(obj.id)) 
+        .map(obj => JSON.parse(JSON.stringify(obj))); 
 }

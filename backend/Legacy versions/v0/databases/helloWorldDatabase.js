@@ -1,26 +1,14 @@
-import * as database from '../databaseConnectionSim.js'
-import { checkSessionByToken } from './sessionsDatabase.js'
+import * as database from '../../../databases/databaseConnectionSim.js'
+import { checkSessionByToken } from '../../../databases/sessionsDatabase.js'
 
 
 
 export function allUsersAllEntries() {
-    return database.users.map(user => {
-        // Filter entries for the current user
-        const userEntries = database.allUsersAllEntries()
-
-        return {
-            id: user.id,
-            username: user.username,
-            allEntries: userEntries
-        };
-    });
+    return database.allUsersAllEntries()
 }
 
 export function usersByManyIDs(argManyIDs) {
-    const idSet = new Set(argManyIDs);
-    return database.users
-        .filter(obj => idSet.has(obj.id)) 
-        .map(obj => JSON.parse(JSON.stringify(obj))); 
+    return database.getManyUsersByID(argManyIDs)
 }
 
 export function userUsernameToId(argUsername) {

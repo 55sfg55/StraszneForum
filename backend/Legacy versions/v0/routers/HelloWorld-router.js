@@ -1,9 +1,9 @@
 import express from 'express';
 const router = express.Router();
 
-import * as databaseController from '../../controller/v0/helloWorldControler.js'
+import * as databaseController from '../controller/helloWorldControler.js'
 
-import * as utils from '../../utils/v0/helloWorldUtils.js'
+import * as utils from '../utils/helloWorldUtils.js'
 
 // Sample route: Get all users
 router.get('/allUsersAllEntries', databaseController.getAllUsersAllEntries)

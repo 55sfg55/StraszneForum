@@ -5,10 +5,10 @@ const app = express();
 const port = 3000;
 
 import bodyParser from 'body-parser';
-import helloWorldRouter from './routers/v0/HelloWorld-router.js'
-import sessionsRouter from './routers/shared/sessionRouter.js'
+import helloWorldRouter from './Legacy versions/v0/routers/HelloWorld-router.js'
+import sessionsRouter from './routers/sessionRouter.js'
 
-import * as utils from './utils/shared/responseModel.js'
+import * as utils from './utils/responseModel.js'
 
 
 

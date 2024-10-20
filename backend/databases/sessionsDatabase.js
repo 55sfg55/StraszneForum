@@ -1,4 +1,4 @@
-import * as database from '../databaseConnectionSim.js'
+import * as database from './databaseConnectionSim.js'
 
 
 

@@ -1,5 +1,5 @@
-import * as database from '../../databases/v0/sessionsDatabase.js'
-import * as utils from '../../utils/shared/responseModel.js'
+import * as database from '../databases/sessionsDatabase.js'
+import * as utils from '../utils/responseModel.js'
 
 // Session management requestes:
 
