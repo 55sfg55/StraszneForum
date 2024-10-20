@@ -1,6 +1,6 @@
 # Backend API Documentation
 
-[Return to the main documentation](../README.md)
+[Return to the main documentation](../../README.md)
 
 ---
 
@@ -37,7 +37,6 @@ _List of symbol versions of the API._
     ```typescript
     {
         "success": [boolean], // Indicates if the request was successful
-        "status": [int], // HTTP status code
         "message": [string], // A brief message describing the outcome of the request
         "data": [object] // An object containing any requested data
     }
@@ -118,7 +117,7 @@ Base path: `http://127.0.0.1:3000/session`
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        token: "pass the token here [token]"
+        token: "m2c193m4-1729000204349"
       })
     })
       .then(response => response.json())
