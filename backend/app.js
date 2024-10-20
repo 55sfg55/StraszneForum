@@ -8,7 +8,7 @@ import bodyParser from 'body-parser';
 import helloWorldRouter from './routers/v0/HelloWorld-router.js'
 import sessionsRouter from './routers/shared/sessionRouter.js'
 
-import * as utils from './utils/v0/helloWorldUtils.js'
+import * as utils from './utils/shared/responseModel.js'
 
 
 
@@ -31,9 +31,9 @@ app.use('/sessions/', sessionsRouter) // This one should stay the same, having l
 
 // Request handler, to check if you can connect to api.
 app.get('/', (req, res) => {
-    const tempResponse = new utils.helloWorldResponse()
+    const tempResponse = new utils.response()
     tempResponse.setAll(true, "Successfully connected to the main api.")
-    res.json(tempResponse.responseDef)
+    res.json(tempResponse)
 })
 
 
