@@ -1,6 +1,5 @@
 export class response {
     constructor() {
-        console.log(123)
         this.success = false;
         this.message = "Failed to generate response/ response not specified.";
         this.data = null

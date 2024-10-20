@@ -1,4 +1,7 @@
 # Forum - Backend API Documentation (Temporary outdated.)
+
+[Main backend docs](../../README.md)
+
 **Important:**
 _This code isn't secure. Do not use this version in a production application; it is an alpha version that is not yet finished._
 
@@ -49,12 +52,12 @@ Overview of the logic behind the endpoint design. Currently describing the messa
 
 - All root paths must include the API version name you wish to use, e.g. v0 in example.com/helloworld/v0.
 
-- /helloworld/ - root path for each version of message board (chat) APIs.
-  /helloworld/v0/ - Alpha version of api, still under development. Can be used for authentication (login) system, or basic thread/chat display testing.
+- /helloworld/  root path for each version of message board (chat) APIs:
+   -  /helloworld/v0/ - Alpha version of api, still under development. Can be used for authentication (login) system, or basic thread/chat display testing.
 
 - /helloworld/ structure:
-    /helloworld/v0/users/ - endpoint for user data related tasks. Includes user authentication (login) system.
-    /helloworld/v0/entries/ - endpoint for entry related tasks.
+   -    /helloworld/v0/users/ - endpoint for user data related tasks. Includes user authentication (login) system.
+   -    /helloworld/v0/entries/ - endpoint for entry related tasks.
 
 ## API endpoints:
 1. GET /helloworld/v0/users/:id - Retrieve user data by ID (with password redacted). Use cautiously, as it can lead to data leak.

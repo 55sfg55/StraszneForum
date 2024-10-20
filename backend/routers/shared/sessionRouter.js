@@ -11,7 +11,11 @@ router.post('/verifySession/', sessionsController.checkSession)
 
 router.get('/', (req, res) => {
     const tempResponse = new utils.response()
-    tempResponse.setAll(true, "Successfully connected to version 0 of the session controller.")
+    
+    tempResponse
+        .setMessage(true)
+        .setMessage("Successfully connected to version 0 of the session controller.")
+    
     res.json(tempResponse)
 });
 
