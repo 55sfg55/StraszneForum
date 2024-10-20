@@ -13,7 +13,7 @@ The documentation is divided into two sections: Usage and Contributing. If you'r
 # Usage.
 1. [Backend](usage/backend/README.md)
 ---
-
----
 # Contributing.
+(For those allowed to use this code, and those who want to understand it better.)
 1. [Backend](contributing/backend/README.md)
+---
