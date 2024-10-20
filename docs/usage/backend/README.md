@@ -6,6 +6,7 @@
 
 **Backend: Table of Contents**  
 1. [Versioning](#versioning)  
+2. [Version list](#version-list)
 2. [Output Format](#output-format)  
 3. [API Endpoints](#api-endpoints)  
 
@@ -30,7 +31,7 @@ _The API is designed to support multiple versioned endpoints if necessary. For s
 
 ## Version list:
 _List of symbol versions of the API._
-1. **v0** - all of the code made for development purposes. Does not support forum functionality.
+1. **v0** - all of the code made for development purposes. Does not support forum functionality. [Version V0 docs](versions/v0/README.md)
 
 ## Output Format
 - The output will always adhere to the same format, which is a JSON object with the following **structure**:

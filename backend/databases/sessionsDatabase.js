@@ -1,4 +1,4 @@
-import * as database from '../databaseConnectionSim.js'
+import * as database from './databaseConnectionSim.js'
 
 
 
@@ -127,11 +127,14 @@ export function loginByUsername(argUsername, argPassword) {
     let temp;
     temp = database.getUserWithPassswordAndUsername(argUsername, argPassword)
     temp = temp ? JSON.parse(JSON.stringify(temp)) : undefined;
+
     if ( !(temp === undefined) ) {
-        //console.log(temp)
         stopSessionByUserID( temp.id )
+        
         const token = generateRandomKey(temp.username) // new token MUST be made based on querried data from the database.
+        
         addSession(temp.id, token)
+        
         return {
             isPasswordCorrect: true,
             token: token

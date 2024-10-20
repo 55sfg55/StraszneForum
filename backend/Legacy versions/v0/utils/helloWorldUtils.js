@@ -1,3 +1,5 @@
+// Response class has been movedd to utils shared. This library shouldn't be used.
+
 export class helloWorldResponse {
     constructor() {
         this.responseDef = {
