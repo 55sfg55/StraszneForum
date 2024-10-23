@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 
     tempResponse
         .setMessage(true)
-        .setMessage("Successfully connected to version 0 of the session controller.")
+        .setMessage("Successfully connected to version V0 of the session controller.")
     
     res.json(tempResponse)
 });

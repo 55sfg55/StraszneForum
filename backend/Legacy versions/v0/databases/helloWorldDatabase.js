@@ -1,4 +1,4 @@
-import * as database from '../../../databases/databaseConnectionSim.js'
+import * as database from '../../v1 - hello world board/databases/databaseConnectionSim.js'
 import { checkSessionByToken } from '../../../databases/sessionsDatabase.js'
 
 
