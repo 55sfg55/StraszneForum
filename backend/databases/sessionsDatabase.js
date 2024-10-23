@@ -1,5 +1,7 @@
-// Assuming `db` is your SQLite database connection
 import { db } from './dbConnection.js'; // Import the database connection
+import bcrypt from 'bcrypt'; // Import bcrypt for hashing
+
+const SALT_ROUNDS = 10; // Number of salt rounds for hashing
 
 function generateRandomKey(username) {
     // Simple hash function to convert the username to a numeric value
@@ -94,38 +96,53 @@ function clearSessions() {
     sessions = sessions.filter(session => session.exp > Date.now());
 }
 
-// Add token and session handler
 export function checkPassword(argId, argPassword, callback) {
-    const sql = `SELECT * FROM users WHERE id = ? AND password = ?`;
+    const sql = `SELECT * FROM users WHERE id = ?`;
     console.log(`Checking password for user ID: ${argId}`);
-    db.get(sql, [argId, argPassword], (err, user) => {
+    db.get(sql, [argId], (err, user) => {
         if (err) {
             console.error("Error checking password:", err); // Log the error
             return callback(false); // Return false on error
         }
         if (!user) {
-            console.log("User not found or password incorrect.");
+            console.log("User not found.");
             return callback(false); // Return false if not found
         }
-        console.log("Password check successful.");
-        callback(true); // Return true if user found
+
+        // Compare the hashed password
+        bcrypt.compare(argPassword, user.password, (err, isMatch) => {
+            if (err) {
+                console.error("Error comparing passwords:", err); // Log the error
+                return callback(false);
+            }
+            console.log(isMatch ? "Password check successful." : "Password incorrect.");
+            callback(isMatch); // Return the result of the comparison
+        });
     });
 }
 
 export function checkPasswordByUsername(argUsername, argPassword, callback) {
-    const sql = `SELECT * FROM users WHERE username = ? AND password = ?`;
+    const sql = `SELECT * FROM users WHERE username = ?`;
     console.log(`Checking password for username: ${argUsername}`);
-    db.get(sql, [argUsername, argPassword], (err, user) => {
+    db.get(sql, [argUsername], (err, user) => {
         if (err) {
             console.error("Error checking password by username:", err); // Log the error
             return callback(false); // Return false on error
         }
         if (!user) {
-            console.log("Username not found or password incorrect.");
+            console.log("Username not found.");
             return callback(false); // Return false if not found
         }
-        console.log("Password check by username successful.");
-        callback(true); // Return true if user found
+
+        // Compare the hashed password
+        bcrypt.compare(argPassword, user.password, (err, isMatch) => {
+            if (err) {
+                console.error("Error comparing passwords:", err); // Log the error
+                return callback(false);
+            }
+            console.log(isMatch ? "Password check by username successful." : "Password incorrect.");
+            callback(isMatch); // Return the result of the comparison
+        });
     });
 }
 
@@ -138,15 +155,23 @@ export function register(argUsername, argPassword, callback) {
             return callback(false); // Handle error if needed
         }
         if (!user) {
-            const insertSql = `INSERT INTO users (username, password) VALUES (?, ?)`;
-            console.log(`Inserting new user: ${argUsername}`);
-            db.run(insertSql, [argUsername, argPassword], function (err) {
+            // Hash the password before inserting
+            bcrypt.hash(argPassword, SALT_ROUNDS, (err, hashedPassword) => {
                 if (err) {
-                    console.error("Error inserting user:", err); // Log the error
+                    console.error("Error hashing password:", err); // Log the error
                     return callback(false); // Handle error if needed
                 }
-                console.log("User registered successfully.");
-                callback(true); // User registered successfully
+
+                const insertSql = `INSERT INTO users (username, password) VALUES (?, ?)`;
+                console.log(`Inserting new user: ${argUsername}`);
+                db.run(insertSql, [argUsername, hashedPassword], function (err) {
+                    if (err) {
+                        console.error("Error inserting user:", err); // Log the error
+                        return callback(false); // Handle error if needed
+                    }
+                    console.log("User registered successfully.");
+                    callback(true); // User registered successfully
+                });
             });
         } else {
             console.log("Username already exists.");
@@ -156,21 +181,98 @@ export function register(argUsername, argPassword, callback) {
 }
 
 export function loginByUsername(argUsername, argPassword, callback) {
-    const sql = `SELECT * FROM users WHERE username = ? AND password = ?`;
+    const sql = `SELECT * FROM users WHERE username = ?`;
     console.log(`Logging in user: ${argUsername}`);
-    db.get(sql, [argUsername, argPassword], (err, user) => {
+    db.get(sql, [argUsername], (err, user) => {
         if (err || !user) {
             console.error("Login failed:", err || "User not found"); // Log the error
             return callback({ isPasswordCorrect: false, token: "" }); // Return false on error or not found
         }
 
-        stopSessionByUserID(user.id); // Clear any existing sessions
+        // Compare the hashed password
+        bcrypt.compare(argPassword, user.password, (err, isMatch) => {
+            if (err) {
+                console.error("Error comparing passwords:", err); // Log the error
+                return callback({ isPasswordCorrect: false, token: "" });
+            }
+            if (!isMatch) {
+                console.log("Password incorrect.");
+                return callback({ isPasswordCorrect: false, token: "" });
+            }
 
-        const token = generateRandomKey(user.username); // Generate a new token
+            stopSessionByUserID(user.id); // Clear any existing sessions
 
-        addSession(user.id, token); // Add new session
+            const token = generateRandomKey(user.username); // Generate a new token
 
-        console.log("Login successful, generated token:", token);
-        callback({ isPasswordCorrect: true, token }); // Return success with token
+            addSession(user.id, token); // Add new session
+
+            console.log("Login successful, generated token:", token);
+            callback({ isPasswordCorrect: true, token }); // Return success with token
+        });
     });
 }
+
+
+
+
+
+
+
+
+
+
+
+// Function to update existing plaintext passwords to hashed passwords
+export function hashExistingPasswords() {
+    const sql = `SELECT id, username, password FROM users`; // Query to get all users
+
+    db.all(sql, [], (err, users) => {
+        if (err) {
+            console.error("Error fetching users:", err);
+            return;
+        }
+
+        // Loop through users and hash their passwords
+        users.forEach(user => {
+            bcrypt.hash(user.password, SALT_ROUNDS, (err, hashedPassword) => {
+                if (err) {
+                    console.error(`Error hashing password for user ${user.username}:`, err);
+                    return;
+                }
+
+                // Update the user's password with the hashed password
+                const updateSql = `UPDATE users SET password = ? WHERE id = ?`;
+                db.run(updateSql, [hashedPassword, user.id], function(err) {
+                    if (err) {
+                        console.error(`Error updating password for user ${user.username}:`, err);
+                    } else {
+                        console.log(`Password for user ${user.username} updated successfully.`);
+                    }
+                });
+            });
+        });
+    });
+}
+
+// Call this function to update existing passwords
+hashExistingPasswords();
+
+export function debugLogPasswords() {
+    const sql = `SELECT username, password FROM users`; // SQL query to retrieve usernames and passwords
+
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            console.error("Error fetching passwords:", err); // Log error if any
+            return;
+        }
+
+        console.log("Debugging passwords in the database:");
+        rows.forEach((row) => {
+            console.log(`Username: ${row.username}, Hashed Password: ${row.password}`); // Log each username and hashed password
+        });
+    });
+}
+
+debugLogPasswords(); // Call the function to log passwords
+
+
