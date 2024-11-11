@@ -157,7 +157,7 @@ export const getAllEntries = (callback) => {
 // Function to create a new entry
 export const createEntry = (title, content, userId, threadId, callback) => {
     console.log(`Creating a new entry with title: ${title}`);
-    const sql = `INSERT INTO entries (title, content, user_id, thread_id) VALUES (?, ?, ?, ?)`;
+    const sql = `INSERT INTO entries (title, content, userId, threadId) VALUES (?, ?, ?, ?)`;
     const params = [title, content, userId, threadId];
 
     db.run(sql, params, function (err) {

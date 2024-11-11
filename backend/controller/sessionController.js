@@ -8,24 +8,33 @@ export function login(req, res) {
     tempResponse.setMessage("Failed to check password.");
 
     // Use the database function with a callback to handle asynchronous result
-    database.loginByUsername(
-        String(req.body.username),
-        String(req.body.password),
-        (result) => {
-            if (result.isPasswordCorrect) {
-                tempResponse
-                    .setSuccess(true)
-                    .setMessage("Password is correct. Successfully processed request.")
-                    .setData({ token: result.token });
-            } else {
-                tempResponse
-                    .setSuccess(false)
-                    .setMessage("Password is incorrect. Successfully processed request.");
-            }
-            res.json(tempResponse);
+    database.loginByUsername(String(req.body.username), String(req.body.password), (result) => {
+        if (result.isPasswordCorrect) {
+            tempResponse
+                .setSuccess(true)
+                .setMessage("Password is correct. Successfully processed request.")
+                .setData({ token: result.token });
+
+            console.log("Token generated:", result.token);  // Add this log to check if token is being generated.
+
+            // Set the token in an HttpOnly cookie
+            res.cookie('auth_token', result.token, {
+                httpOnly: true,   // Makes the cookie accessible only by the server
+                secure: true, // process.env.NODE_ENV === 'production', // Set 'secure' to true in production (HTTPS)
+                maxAge: 24 * 60 * 60 * 1000,  // Optional: Cookie expiration (1 day)
+                sameSite: 'none'  // Optional: Prevents the cookie from being sent with cross-site requests (Lax for dev)
+            });
+
+        } else {
+            tempResponse
+                .setSuccess(false)
+                .setMessage("Password is incorrect.");
         }
-    );
+        res.json(tempResponse);
+    });
 }
+
+
 
 export function register(req, res) {
     const tempResponse = new utils.response();
@@ -46,21 +55,35 @@ export function register(req, res) {
     });
 }
 
-export function checkSession(req, res) {
+
+
+export async function checkSession(req, res) {
     const tempResponse = new utils.response();
     tempResponse.setMessage("Failed to check token.");
 
-    // Use the database function with a callback to handle asynchronous result
-    const result = database.checkSessionByToken(String(req.body.token));
-    
-    if (result) {
-        tempResponse
-            .setSuccess(true)
-            .setMessage("Token is correct.");
-    } else {
-        tempResponse
-            .setSuccess(false)
-            .setMessage("Invalid token.");
+    // Get the token from the cookies, not from req.body
+    const token = req.cookies.auth_token;  // HttpOnly cookie automatically included in the request
+
+    if (!token) {
+        tempResponse.setSuccess(false).setMessage("No token provided.");
+        return res.json(tempResponse);
     }
+
+    try {
+        // Assuming checkSessionByToken is an async function that checks the token in the database
+        const result = await database.checkSessionByToken(token);
+        
+        if (result) {
+            tempResponse.setSuccess(true).setMessage("Token is correct.");
+        } else {
+            tempResponse.setSuccess(false).setMessage("Invalid token.");
+        }
+    } catch (error) {
+        console.error("Error checking session:", error);
+        tempResponse.setSuccess(false).setMessage("Error checking token.");
+    }
+
+    // Return the response
     res.json(tempResponse);
 }
+

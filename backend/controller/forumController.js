@@ -90,6 +90,8 @@ export function createThread(req, res) {
     const response = new utils.response();
     const { title, content, userId } = req.body; // Assuming the body contains title, content, and userId
 
+    // console.log(req.body)
+
     if (!title || !userId) {
         response.setMessage("Missing required fields: title or userId.");
         return res.json(response);

@@ -1,8 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 
+import cookieParser from 'cookie-parser';
+
 const app = express();
-const port = 3000;
+const port = 3096;
 
 import bodyParser from 'body-parser';
 // import helloWorldRouterV0 from './Legacy versions/v0/routers/HelloWorld-router.js' // V0 - old API version for development
@@ -18,13 +20,24 @@ import * as utils from './utils/responseModel.js'
 
 
 
+import { parseToken } from './middleware/parseToken.js'; // Import the middleware
+
+
+
 
 app.use(bodyParser.json());
 
+app.use(cookieParser());  // Add this middleware to parse cookies
+
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors()); 
+app.use(cors({
+  origin: 'http://localhost:3000',  // Your frontend URL
+  credentials: true,  // Ensure cookies are sent along with the request
+}));
 
+
+app.use(parseToken)
 
 
 

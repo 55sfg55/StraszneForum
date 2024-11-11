@@ -23,8 +23,8 @@ router.get('/entries/all', threadEntryController.getAllEntries); // Get all entr
 router.get('/entries/:id', threadEntryController.getEntryByID); // Get entry by ID
 router.get('/entries/byUser/:userId', threadEntryController.getEntriesByUserID); // Get entries by user ID
 router.get('/entries/byThread/:threadId', threadEntryController.getEntriesByThreadID); // Get entries by thread ID
-router.post('/entries', threadEntryController.createEntry); // Create a new entry
 router.get('/entries/many/:manyids', parseArrayIds, threadEntryController.getManyEntriesByID); // Get many entries by IDs with middleware
+router.post('/entries/create/', threadEntryController.createEntry); // Create a new entry
 
 // =============================
 // Health Check Route

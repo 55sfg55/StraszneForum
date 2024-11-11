@@ -1,5 +1,10 @@
 import { db } from './dbConnection.js'; // Import the database connection
 import bcrypt from 'bcrypt'; // Import bcrypt for hashing
+import jwt from "jsonwebtoken";
+
+console.log(
+    jwt
+)
 
 const SALT_ROUNDS = 10; // Number of salt rounds for hashing
 
@@ -66,7 +71,7 @@ function checkSessionByUserID(argID) {
 
 export function checkSessionByToken(argToken) {
     console.log(`Checking session by token: ${argToken}`);
-    const query = sessions.find(session => session.token === argToken);
+    const query = sessions.find(session => session.token === String(argToken));
     if (query === undefined) {
         console.log(`No session found for token: ${argToken}`);
         return false;
@@ -202,7 +207,10 @@ export function loginByUsername(argUsername, argPassword, callback) {
 
             stopSessionByUserID(user.id); // Clear any existing sessions
 
-            const token = generateRandomKey(user.username); // Generate a new token
+            const token = jwt.sign({
+                exp: Math.floor(Date.now() / 1000) + (60 * 60),
+                userId: user.id
+              }, 'secret');; // Generate a new token
 
             addSession(user.id, token); // Add new session
 
@@ -222,40 +230,40 @@ export function loginByUsername(argUsername, argPassword, callback) {
 
 
 
-// Function to update existing plaintext passwords to hashed passwords
-export function hashExistingPasswords() {
-    const sql = `SELECT id, username, password FROM users`; // Query to get all users
+// // Function to update existing plaintext passwords to hashed passwords
+// export function hashExistingPasswords() {
+//     const sql = `SELECT id, username, password FROM users`; // Query to get all users
 
-    db.all(sql, [], (err, users) => {
-        if (err) {
-            console.error("Error fetching users:", err);
-            return;
-        }
+//     db.all(sql, [], (err, users) => {
+//         if (err) {
+//             console.error("Error fetching users:", err);
+//             return;
+//         }
 
-        // Loop through users and hash their passwords
-        users.forEach(user => {
-            bcrypt.hash(user.password, SALT_ROUNDS, (err, hashedPassword) => {
-                if (err) {
-                    console.error(`Error hashing password for user ${user.username}:`, err);
-                    return;
-                }
+//         // Loop through users and hash their passwords
+//         users.forEach(user => {
+//             bcrypt.hash(user.password, SALT_ROUNDS, (err, hashedPassword) => {
+//                 if (err) {
+//                     console.error(`Error hashing password for user ${user.username}:`, err);
+//                     return;
+//                 }
 
-                // Update the user's password with the hashed password
-                const updateSql = `UPDATE users SET password = ? WHERE id = ?`;
-                db.run(updateSql, [hashedPassword, user.id], function(err) {
-                    if (err) {
-                        console.error(`Error updating password for user ${user.username}:`, err);
-                    } else {
-                        console.log(`Password for user ${user.username} updated successfully.`);
-                    }
-                });
-            });
-        });
-    });
-}
+//                 // Update the user's password with the hashed password
+//                 const updateSql = `UPDATE users SET password = ? WHERE id = ?`;
+//                 db.run(updateSql, [hashedPassword, user.id], function(err) {
+//                     if (err) {
+//                         console.error(`Error updating password for user ${user.username}:`, err);
+//                     } else {
+//                         console.log(`Password for user ${user.username} updated successfully.`);
+//                     }
+//                 });
+//             });
+//         });
+//     });
+// }
 
-// Call this function to update existing passwords
-hashExistingPasswords();
+// // Call this function to update existing passwords
+// hashExistingPasswords();
 
 export function debugLogPasswords() {
     const sql = `SELECT username, password FROM users`; // SQL query to retrieve usernames and passwords

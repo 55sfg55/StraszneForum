@@ -39,6 +39,7 @@ db.serialize(() => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         threadId INTEGER,
         userId INTEGER,
+        title TEXT NOT NULL,
         content TEXT NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (threadId) REFERENCES threads (id),
@@ -79,15 +80,15 @@ db.serialize(() => {
 
     // Insert entries
     const entries = [
-        { threadId: 1, userId: 1, content: "Entry in first thread by admin." },
-        { threadId: 1, userId: 2, content: "Entry in first thread by admin2." },
-        { threadId: 2, userId: 1, content: "Entry in second thread by admin." },
-        { threadId: 2, userId: 2, content: "Entry in second thread by admin2." }
+        { threadId: 1, userId: 1, title: "First by admin", content: "Entry in first thread by admin." },
+        { threadId: 1, userId: 2, title: "First by admin2", content: "Entry in first thread by admin2." },
+        { threadId: 2, userId: 1, title: "Second by admin", content: "Entry in second thread by admin." },
+        { threadId: 2, userId: 2, title: "Second by admin2", content: "Entry in second thread by admin2." }
     ];
-    const entryStmt = db.prepare("INSERT INTO entries (threadId, userId, content) VALUES (?, ?, ?)");
+    const entryStmt = db.prepare("INSERT INTO entries (threadId, userId, title, content) VALUES (?, ?, ?, ?)");
 
     entries.forEach(entry => {
-        entryStmt.run(entry.threadId, entry.userId, entry.content, (err) => {
+        entryStmt.run(entry.threadId, entry.userId, entry.title, entry.content, (err) => {
             if (err) {
                 console.error('Error inserting entry:', err.message);
             }
