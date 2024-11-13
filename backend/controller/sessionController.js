@@ -72,25 +72,28 @@ export async function checkSession(req, res) {
 
     try {
         // Assuming checkSessionByToken is an async function that checks the token in the database
-        const result = database.checkSessionByToken(token);
+        // const result = database.checkSessionByToken(token);
 
-        console.log("here", result, token)
-        if (result) {
-            tempResponse.setSuccess(true).setMessage("Token is correct.");
+
+        database.checkSessionByToken(req.parsedToken)
+                .then(sessionData => {
+                    tempResponse.setSuccess(true).setMessage("Token is correct.");
             
-            res.json(tempResponse);
-        } else {
-            tempResponse.setSuccess(false).setMessage("Invalid token.");
+                    res.json(tempResponse);
+                })
+                .catch(err => {
+                    tempResponse.setSuccess(false).setMessage("Invalid token.");
             
-            res.json(tempResponse);
-        }
+                    res.json(tempResponse);
+                });
+
     } catch (error) {
         console.error("Error checking session:", error);
         tempResponse.setSuccess(false).setMessage("Error checking token.");
     }
 
     // tempResponse.setMessage(req.parsedToken)
-    res.json(tempResponse)
+    // res.json(tempResponse)
 }
 
 export function logout(req, res) {

@@ -8,5 +8,7 @@ export function requireAuth(req, res, next) {
             .setMessage("Access denied. Token is invalid or missing.")
         res.json(tempResponse)
     }
-    next();
+    else{
+        next();
+    }
 }

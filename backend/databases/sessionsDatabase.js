@@ -40,7 +40,11 @@ export function checkSessionByToken(argToken) {
 
             // Check if the token is expired based on the exp field or lastLogOut
             // console.log( global.SERVER_START, tokenIat )
-            if ( (tokenIat > lastLogOut || lastLogOut === null) && tokenIat > global.SERVER_START ) {
+            console.log((tokenIat > lastLogOut), tokenIat, lastLogOut)
+            console.log(( lastLogOut === null))
+            console.log((tokenIat > lastLogOut || lastLogOut === null))
+            console.log( ( tokenIat > global.SERVER_START ))
+            if ( (tokenIat > lastLogOut || lastLogOut === null) && ( tokenIat > global.SERVER_START ) ) {
                 console.log(`Session valid for token: ${JSON.stringify(argToken)}`);
                 resolve({ userID: userId });  // Resolve promise if session is valid
             } else {
@@ -53,7 +57,7 @@ export function checkSessionByToken(argToken) {
 
 
 export function stopSessionByUserID(argID) {
-    const currentTimestamp = Date.now();  // Current timestamp in milliseconds
+    const currentTimestamp = Date.now() / 1000;  // Current timestamp in milliseconds
     const sql = `UPDATE users SET lastLogOut = ? WHERE id = ?`;
 
     db.run(sql, [currentTimestamp, argID], (err) => {
