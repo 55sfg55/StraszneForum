@@ -7,8 +7,9 @@ const app = express();
 const port = 3096;
 
 import bodyParser from 'body-parser';
+
 // import helloWorldRouterV0 from './Legacy versions/v0/routers/HelloWorld-router.js' // V0 - old API version for development
-import helloWorldRouter from './Legacy versions/v1 - hello world board/routers/helloWolrdBoardRouter.js'
+// import helloWorldRouter from './Legacy versions/v1 - hello world board/routers/helloWolrdBoardRouter.js'
 
 import sessionsRouter from './routers/sessionRouter.js'
 
@@ -22,6 +23,8 @@ import * as utils from './utils/responseModel.js'
 
 import { parseToken } from './middleware/parseToken.js'; // Import the middleware
 
+
+global.SERVER_START = Date.now() / 1000
 
 
 
@@ -45,7 +48,7 @@ app.use(parseToken)
 // app.use('/helloworld/v0/', helloWorldRouterV0) // V0 - old API version for development
 // app.use('/helloworld/v1/', helloWorldRouter)
 
-app.use('/sessions/', sessionsRouter) // This one should stay the same, having login, and register option. The rest should be handled by passing token to the right request, and processing at backend.
+app.use('/sessions/', sessionsRouter) // This one should remain the same structure, if possible. Outside of login, register and verify request, all should be handled by the secound API.
 
 app.use('/users/', usersRouter)
 
@@ -59,7 +62,7 @@ app.all('/', (req, res) => {
 
     tempResponse
       .setSuccess(true)
-      .setMessage("Successfully connected to the main api.")
+      .setMessage("Successfully connected to the main API.")
     
     res.json(tempResponse)
 })

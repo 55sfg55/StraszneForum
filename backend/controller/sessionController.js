@@ -62,7 +62,8 @@ export async function checkSession(req, res) {
     tempResponse.setMessage("Failed to check token.");
 
     // Get the token from the cookies, not from req.body
-    const token = req.cookies.auth_token;  // HttpOnly cookie automatically included in the request
+    const token = req.parsedToken;  // HttpOnly cookie automatically included in the request
+    // console.log("test: ", req.parsedToken)
 
     if (!token) {
         tempResponse.setSuccess(false).setMessage("No token provided.");
@@ -71,19 +72,47 @@ export async function checkSession(req, res) {
 
     try {
         // Assuming checkSessionByToken is an async function that checks the token in the database
-        const result = await database.checkSessionByToken(token);
-        
+        const result = database.checkSessionByToken(token);
+
+        console.log("here", result, token)
         if (result) {
             tempResponse.setSuccess(true).setMessage("Token is correct.");
+            
+            res.json(tempResponse);
         } else {
             tempResponse.setSuccess(false).setMessage("Invalid token.");
+            
+            res.json(tempResponse);
         }
     } catch (error) {
         console.error("Error checking session:", error);
         tempResponse.setSuccess(false).setMessage("Error checking token.");
     }
 
-    // Return the response
+    // tempResponse.setMessage(req.parsedToken)
+    res.json(tempResponse)
+}
+
+export function logout(req, res) {
+    const tempResponse = new utils.response();
+
+    // Ensure parsed token and userId are present
+    if (!req.parsedToken) {
+        tempResponse
+            .setSuccess(false)
+            .setMessage("No valid session found for logout.");
+        return res.json(tempResponse);
+    }
+
+    const userId = req.parsedToken.userId;
+
+    // Stop the session by updating lastLogOut for the user
+    database.stopSessionByUserID(userId);
+
+    tempResponse
+        .setSuccess(true)
+        .setMessage("User successfully logged out.");
+    
     res.json(tempResponse);
 }
 

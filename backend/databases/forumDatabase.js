@@ -1,6 +1,6 @@
 // forumDatabase.js
 
-import { db } from './dbConnection.js'; // Import the database connection
+import { db } from './dbConnection.js';
 
 // Function to get a thread by ID with callback
 export const getThreadById = (id, callback) => {
@@ -59,7 +59,7 @@ export const getThreadsByIds = (ids, callback) => {
 // Function to get threads by user ID
 export const getThreadsByUserId = (userId, callback) => {
     console.log(`Fetching threads for user ID: ${userId}`);
-    const sql = `SELECT * FROM threads WHERE userId = ?`; // Assuming user_id is the foreign key
+    const sql = `SELECT * FROM threads WHERE userId = ?`;
     db.all(sql, [userId], (err, rows) => {
         if (err) {
             console.error(`Error fetching threads for user ID ${userId}:`, err);
@@ -75,7 +75,7 @@ export const getThreadsByUserId = (userId, callback) => {
 export const createThread = (title, content, userId, callback) => {
     console.log(`Creating a new thread with title: ${title}`);
     const sql = `INSERT INTO threads (title, content, userId) VALUES (?, ?, ?)`;
-    const params = [title, content, userId]; // Ensure 'content' is included in the params
+    const params = [title, content, userId]; 
 
     db.run(sql, params, function (err) {
         if (err) {
@@ -84,7 +84,7 @@ export const createThread = (title, content, userId, callback) => {
         }
 
         console.log(`Thread created successfully with ID: ${this.lastID}`);
-        callback({ id: this.lastID, title, content, userId }, null); // Return created thread data
+        callback({ id: this.lastID, title, content, userId }, null); 
     });
 };
 
@@ -107,7 +107,7 @@ export const getEntriesByThreadId = (threadId, callback) => {
 // Function to get entries by user ID
 export const getEntriesByUserId = (userId, callback) => {
     console.log(`Fetching entries for user ID: ${userId}`);
-    const sql = `SELECT * FROM entries WHERE userId = ?`; // Assuming user_id is the foreign key
+    const sql = `SELECT * FROM entries WHERE userId = ?`; 
     db.all(sql, [userId], (err, rows) => {
         if (err) {
             console.error(`Error fetching entries for user ID ${userId}:`, err);
@@ -167,7 +167,7 @@ export const createEntry = (title, content, userId, threadId, callback) => {
         }
 
         console.log(`Entry created successfully with ID: ${this.lastID}`);
-        callback({ id: this.lastID, title, content, userId, threadId }, null); // Return created entry data
+        callback({ id: this.lastID, title, content, userId, threadId }, null); 
     });
 };
 

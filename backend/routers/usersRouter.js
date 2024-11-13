@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-import * as userController from '../controller/usersController.js'; // Adjust this import based on your structure
+import * as userController from '../controller/usersController.js';
 import * as utils from '../utils/responseModel.js';
 import { parseArrayIds } from '../middleware/parseArrayIds.js'; // Import the middleware
 
@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
     const tempResponse = new utils.response();
     
     tempResponse
-        .setSuccess(true) // Ensure to use setSuccess here
+        .setSuccess(true) 
         .setMessage("Successfully connected to the User Controller.");
 
     res.json(tempResponse);
