@@ -88,8 +88,9 @@ export function getThreadsByUserID(req, res) {
 // Function to create a new thread
 export function createThread(req, res) {
     const response = new utils.response();
-    const { title, content, userId } = req.body; // Assuming the body contains title, content, and userId
+    const { title, content } = req.body; // Assuming the body contains title, content, and userId
 
+    const userId = req.parsedToken.userId
     // console.log(req.body)
 
     if (!title || !userId) {
@@ -152,7 +153,9 @@ export function getEntriesByUserID(req, res) {
 // Function to create a new entry
 export function createEntry(req, res) {
     const response = new utils.response();
-    const { title, content, userId, threadId } = req.body; // Assuming the body contains these fields
+    const { title, content, threadId } = req.body; // Assuming the body contains these fields
+
+    const userId = req.parsedToken.userId
 
     if (!title || !content || !userId || !threadId) {
         response.setMessage("Missing required fields: title, content, userId, or threadId.");
