@@ -54,7 +54,7 @@ app.use('/forum/', forum)
 
 
 // Request handler, to check if you can connect to api.
-app.get('/', (req, res) => {
+app.all('/', (req, res) => {
     const tempResponse = new utils.response()
 
     tempResponse
