@@ -21,6 +21,7 @@ export function login(req, res) {
             res.cookie('auth_token', result.token, {
                 httpOnly: true,   // Makes the cookie accessible only by the server
                 secure: true, // process.env.NODE_ENV === 'production', // Set 'secure' to true in production (HTTPS)
+                partitioned: true,
                 maxAge: 24 * 60 * 60 * 1000,  // Optional: Cookie expiration (1 day)
                 sameSite: 'none'  // Optional: Prevents the cookie from being sent with cross-site requests (Lax for dev)
             });
@@ -66,8 +67,8 @@ export async function checkSession(req, res) {
     // console.log("test: ", req.parsedToken)
 
     if (!token) {
-        tempResponse.setSuccess(false).setMessage("No token provided.");
-        return res.json(tempResponse);
+        tempResponse.setSuccess(false).setMessage("No token detected. Middleware failed.");
+        res.json(tempResponse);
     }
 
     try {
@@ -90,6 +91,7 @@ export async function checkSession(req, res) {
     } catch (error) {
         console.error("Error checking session:", error);
         tempResponse.setSuccess(false).setMessage("Error checking token.");
+        res.json(tempResponse)
     }
 
     // tempResponse.setMessage(req.parsedToken)
