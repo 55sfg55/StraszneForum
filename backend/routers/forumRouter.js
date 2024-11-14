@@ -19,7 +19,7 @@ router.get('/threads/byUser/:userId', threadEntryController.getThreadsByUserID);
 
 // Protected: 
 router.delete('/threads/:id/delete', requireAuth, threadEntryController.deleteThread) // Delete a thread
-// router.delete('/threads/many/:manyids/delete', requireAuth, threadEntryController.deleteManyThread) // Delete a thread
+// router.delete('/threads/many/:manyids/delete', requireAuth, threadEntryController.deleteManyThread) // Delete many threads
 router.post('/threads/create/', requireAuth, threadEntryController.createThread); // Create a new thread
 
 // =============================
@@ -33,6 +33,8 @@ router.get('/entries/byThread/:threadId', threadEntryController.getEntriesByThre
 router.get('/entries/many/:manyids', parseArrayIds, threadEntryController.getManyEntriesByID); // Get many entries by IDs with middleware
 
 // Protected:
+// router.delete('/entries/:id/delete', requireAuth, threadEntryController.deleteEntry) // Delete a entry
+// router.delete('/entries/many/:manyids/delete', requireAuth, threadEntryController.deleteManyEntries) // Delete many entries
 router.post('/entries/create/', requireAuth, threadEntryController.createEntry); // Create a new entry
 
 // =============================
