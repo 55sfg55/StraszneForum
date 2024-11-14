@@ -16,7 +16,7 @@ router.post('/verifySession/', requireAuth, sessionsController.checkSession)
 // Protected:
 router.post('/logout/', requireAuth, sessionsController.logout)
 
-router.get('/', (req, res) => {
+router.all('/', (req, res) => {
     const tempResponse = new utils.response()
 
     tempResponse

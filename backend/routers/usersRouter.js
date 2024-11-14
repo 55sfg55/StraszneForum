@@ -17,7 +17,7 @@ router.get('/many/:manyids', parseArrayIds, userController.getManyUsersByID); //
 // Health Check Route
 // =============================
 
-router.get('/', (req, res) => {
+router.all('/', (req, res) => {
     const tempResponse = new utils.response();
     
     tempResponse

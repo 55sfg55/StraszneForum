@@ -32,7 +32,7 @@ export function getAllThreads(req, res) {
         } else {
             response
                 .setSuccess(true)
-                .setData({ threads: result }) // Clear description of the data structure being returned
+                .setData({ threads: result }) 
                 .setMessage("Successfully got all threads.");
         }
         res.json(response);
@@ -45,7 +45,7 @@ export function getManyThreadsByID(req, res) {
     response.setMessage("Failed to get threads by IDs.");
 
     // Parse the manyids parameter from the URL
-    const ids = req.params.manyids.split(',').map(id => id.trim());
+    const ids = req.ids
 
     if (ids.length === 0) {
         response.setMessage("Invalid or missing IDs.");
@@ -59,7 +59,7 @@ export function getManyThreadsByID(req, res) {
         } else {
             response
                 .setSuccess(true)
-                .setData({ threads: result }) // Clear description of the data structure being returned
+                .setData({ threads: result }) 
                 .setMessage("Successfully got threads by IDs.");
         }
         res.json(response);
@@ -88,7 +88,7 @@ export function getThreadsByUserID(req, res) {
 // Function to create a new thread
 export function createThread(req, res) {
     const response = new utils.response();
-    const { title, content } = req.body; // Assuming the body contains title, content, and userId
+    const { title, content } = req.body; 
 
     const userId = req.parsedToken.userId
     // console.log(req.body)
@@ -105,8 +105,35 @@ export function createThread(req, res) {
         } else {
             response
                 .setSuccess(true)
-                .setData(result) // Return the created thread data
+                .setData(result) 
                 .setMessage("Successfully created the thread.");
+        }
+        res.json(response);
+    });
+}
+
+// Function to delete a thread
+export function deleteThread(req, res) {
+    const response = new utils.response();
+    const threadId = req.params.id; 
+
+    const userId = req.parsedToken.userId
+    // console.log(req.body)
+
+    if (!threadId || !userId) {
+        response.setMessage("Missing required fields: threadID or userId.");
+        return res.json(response);
+    }
+
+    database.deleteThread( threadId, userId, (result, err) => {
+        if (err) {
+            response.setMessage("Couldn't delete the thread.");
+            console.log(err, 123);
+        } else {
+            response
+                .setSuccess(true)
+                // .setData(result) // Return the created thread data
+                .setMessage("Successfully deleted the thread.");
         }
         res.json(response);
     });
@@ -182,7 +209,7 @@ export function getManyEntriesByID(req, res) {
     response.setMessage("Failed to get entries by IDs.");
 
     // Parse the manyids parameter from the URL
-    const ids = req.params.manyids.split(',').map(id => id.trim());
+    const ids = req.ids
 
     if (ids.length === 0) {
         response.setMessage("Invalid or missing IDs.");

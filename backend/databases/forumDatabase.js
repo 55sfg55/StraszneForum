@@ -88,6 +88,49 @@ export const createThread = (title, content, userId, callback) => {
     });
 };
 
+// Function to delete a thread
+// export const deleteThread = (threadId, userId, callback) => {
+//     console.log(`Deleting a thread with ID: ${threadId}`);
+//     const sql = `INSERT INTO threads (title, content, userId) VALUES (?, ?, ?)`;
+//     const params = [title, content, userId]; 
+
+//     db.run(sql, params, function (err) {
+//         if (err) {
+//             console.error(`Error creating thread:`, err);
+//             return callback(null, err);
+//         }
+
+//         console.log(`Thread delete successfully with ID: ${this.lastID}`);
+//         callback({ id: this.lastID, title, content, userId }, null); 
+//     });
+// };
+
+// Function to delete a thread based on its threadId and userId
+export const deleteThread = (threadId, userId, callback) => {
+    console.log(`Deleting a thread with ID: ${threadId} for user ID: ${userId}`);
+    
+    const sql = `DELETE FROM threads WHERE id = ? AND userId = ?`;
+    const params = [threadId, userId]; // Provide threadId and userId as params for the query
+
+    // Execute the query
+    db.run(sql, params, function (err) {
+        if (err) {
+            console.error(`Error deleting thread:`, err);
+            return callback(null, err); // Pass the error to the callback
+        }
+
+        // Check if a row was deleted (affectedRows can help check if the deletion was successful)
+        if (this.changes === 0) {
+            console.log(`No thread found with ID: ${threadId} for user ID: ${userId}`);
+            return callback(null, new Error('No thread found or you do not have permission to delete.'));
+        }
+
+        console.log(`Thread deleted successfully with ID: ${threadId}`);
+        callback({ threadId, userId }, null); // Return success with thread ID and user ID
+    });
+};
+
+
 
 // Function to get entries by thread ID
 export const getEntriesByThreadId = (threadId, callback) => {

@@ -18,6 +18,8 @@ router.get('/threads/many/:manyids', parseArrayIds, threadEntryController.getMan
 router.get('/threads/byUser/:userId', threadEntryController.getThreadsByUserID); // Get threads by user ID
 
 // Protected: 
+router.delete('/threads/:id/delete', requireAuth, threadEntryController.deleteThread) // Delete a thread
+// router.delete('/threads/many/:manyids/delete', requireAuth, threadEntryController.deleteManyThread) // Delete a thread
 router.post('/threads/create/', requireAuth, threadEntryController.createThread); // Create a new thread
 
 // =============================
@@ -37,7 +39,7 @@ router.post('/entries/create/', requireAuth, threadEntryController.createEntry);
 // Health Check Route
 // =============================
 
-router.get('/', (req, res) => {
+router.all('/', (req, res) => {
     const tempResponse = new utils.response();
 
     tempResponse
